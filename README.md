@@ -260,57 +260,27 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 
 ---
 
-## 十二、 安装部署与快速上手
+## 十二、 安装与使用
 
-本技能完全遵循标准 Agent Skill 规范，**核心分镜规划与工单生成功能为纯规约驱动，零外部环境依赖**；同时自带开箱即用的纯 Python 标准库自动化质检工具链。
+### 1. 安装技能
 
-### 1. 技能安装部署方式
+将本项目直接克隆或解压至你的技能目录（`skills/`）下即可：
 
-#### 方式 A：Git 克隆安装（推荐，便于同步官方更新）
+```bash
+# 进入你的 skills 目录并克隆本仓库
+git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git
+```
 
-直接将本仓库克隆至您使用的 Agent 客户端技能目录中：
-
-* **Antigravity / Gemini CLI 环境**：
-  * **全局安装**（所有项目随时可用）：
-    * Windows (PowerShell):
-      ```powershell
-      git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git "$HOME\.gemini\config\skills\jmcai-shotlist-builder"
-      ```
-    * macOS / Linux:
-      ```bash
-      git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git ~/.gemini/config/skills/jmcai-shotlist-builder
-      ```
-  * **项目工作区局部安装**（当前项目内生效，便于团队协同）：
-    ```bash
-    git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git .agent/skills/jmcai-shotlist-builder
-    ```
-
-* **Claude Code / OpenClaw / Cursor 等 Agent 环境**：
-  * 克隆至客户端对应的 skills 目录（如 `~/.claude/skills/jmcai-shotlist-builder`）即可自动加载。
+> **说明**：也可以直接下载 [Release ZIP 压缩包](https://github.com/allen-Jmc/jmcai-shotlist-builder) 并解压到 `skills/` 目录下（保持文件夹名称为 `jmcai-shotlist-builder`）。
 
 ---
 
-#### 方式 B：Release ZIP 离线开箱即用
+### 2. 触发与使用
 
-1. 从 [GitHub 仓库发布页](https://github.com/allen-Jmc/jmcai-shotlist-builder) 或交付渠道获取纯净分发包 `jmcai-shotlist-builder.zip`；
-2. 直接解压至上述任一 Agent 的 skills 目录下（解压后的文件夹保持名称 `jmcai-shotlist-builder`）；
-3. 刷新或重启智能体对话会话，Agent 即可自动识别并加载该技能。
+安装完成后，在智能体对话中直接提供剧本或输入需求即可自动激活：
 
----
+* **剧本全流程拆解**：*“我上传了一份短片剧本，请帮我拆解并制作完整的电影级分镜工单。”*
+* **ByteDance Seedance 提示词**：*“请使用 Seedance 2.5 规约，生成带 30 秒长运镜标定符号的视频提示词。”*
+* **快手可灵 Kling 提示词**：*“请使用可灵 3.0 规约，生成五层结构化提示词与角色对白协议。”*
+* **MiniMax H3 生产工单**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与三模态 Tab 的 HTML 生产工单。”*
 
-### 2. 运行环境与依赖说明
-
-| 功能层级 | 依赖需求 | 说明 |
-| :--- | :--- | :--- |
-| **剧本拆解 / 视听规划 / 三模态提示词 / HTML 工单输出** | **零依赖 (Zero-dependency)** | 纯 Prompt 与结构化规约驱动，任何主流大模型及 Agent 客户端直接读取 `SKILL.md` 即刻执行，**无需安装任何本地 Python 环境**。 |
-| **本地自动化 Linter 质检与回归测试套件 (可选)** | **Python 3.10+** (原生标准库) | 内置的质量门禁脚本均采用 Python 标准库编写，推荐通过现代化依赖管理工具 `uv` 执行：<br>`uv run python scripts/h3_regression_tests.py` |
-
----
-
-### 3. 开箱即用触发指令
-
-向 AI 发送以下常见指令即可无缝激活本技能：
-* 🎬 **短片/剧本全流程拆解**：*“我上传了一份短片剧本，请帮我拆解并制作完整的电影级分镜工单。”*
-* 🌪️ **ByteDance Seedance 2.5 运镜生成**：*“请使用 Seedance 2.5 规约，生成带 30 秒长运镜标定符号的视频提示词。”*
-* ⚡ **快手可灵 Kling 3.0 五层结构生成**：*“请为该剧本生成快手可灵 Kling 3.0 五层结构化提示词，包含角色对白协议。”*
-* 💎 **MiniMax H3 工业 HTML 生产工单构建**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与三模态 Tab 的生产 HTML 工单。”*
