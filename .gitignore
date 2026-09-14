@@ -1,0 +1,23 @@
+# Python 虚拟环境与字节码缓存
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.class
+
+# IDE 与编辑器配置文件
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 操作系统缓存
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 临时构建与归档压缩包
+*.zip
+*.tar.gz
+dist/
+build/

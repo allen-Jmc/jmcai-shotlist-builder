@@ -1,0 +1,137 @@
+{
+  "skill_name": "jmcai-shotlist-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我上传了一份短片剧本，请直接帮我做完整 shotlist 和视频提示词。",
+      "expected_output": "The first response asks the user to choose Seedance 2.0 or MiniMax H3 and stops before script analysis or asset requests.",
+      "files": [],
+      "expectations": [
+        "The response contains both exact options: Seedance 2.0 and MiniMax H3.",
+        "The response asks for exactly one platform choice.",
+        "The response does not analyze the screenplay, request assets, draw blocking, or emit prompt fields."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这是同一个任务的下一轮。上一轮你已经完成平台提问，我现在明确选择 Seedance 2.0。剧本：1-1 夜 内，人物林夏。林夏走到桌边，拿起母亲留下的旧照片，低声说：‘我回来了。’请做全场。",
+      "expected_output": "The skill enters the unchanged Seedance script-reading and asset-request branch, lists the character, location, and photograph, then stops for uploads and scope without H3 syntax.",
+      "files": [],
+      "expectations": [
+        "The response does not ask for the platform again.",
+        "The asset request includes Lin Xia, the interior-night location, and the old photograph.",
+        "The response ends with the existing Seedance upload-and-scope instruction.",
+        "No H3 top-level fields, H3 reference labels, or H3 mode names appear."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "继续一个已完成前三阶段的任务：PROMPT_PLATFORM 已锁定为 MiniMax H3；范围为场景 1；资产映射和俯视走位均已批准。suwan.png 是苏晚的可复用人物外观参考，rain_stall.png 是纸鹤摊环境参考，suwan_voice.wav 只参考苏晚的音色与缓慢疲惫的语速，不复制原音频。生成一个 15 秒 Ref2VA HTML 分镜。镜头一：苏晚坐在桌边看着纸鹤；她的画外音是‘我本来不信。’镜头二在 00:07.000 切到她的手部近景，她没有开口，纸鹤轻轻颤动。",
+      "expected_output": "A MiniMax H3 HTML shotlist with paired Chinese director-storyboard and English six-section prompts. An operator checklist maps suwan_voice.wav to the real <Audio 1> upload slot and Su Wan, while both model-facing prompts contain no audio filename. The Chinese and English prompts both bind <Audio 1> to Su Wan's owning vocal event, use audio reference rather than reuse, and preserve the target Chinese voice-over.",
+      "files": [],
+      "expectations": [
+        "The Chinese block keeps the five-section director-storyboard structure; an operator checklist outside both prompts maps suwan_voice.wav to <Audio 1> and 苏晚, while 角色与场景 contains one filename-free <Audio 1> binding with Audio mode: audio reference, Retention: reference, scope, and exclusions.",
+        "The English companion contains the six sections once and in canonical order: subject_definitions, summary, retention_analysis, detailed_description, overall_soundscape, non_diegetic_music.",
+        "The English definition maps <Audio 1> semantically to Su Wan's same stable speaker ID without naming suwan_voice.wav; the summary includes audio reference, and retention uses reference without a speaker ID.",
+        "Both prompts cite <Audio 1> at Su Wan's actual vocal event; the Chinese prompt also uses natural-language voice direction. Both retain a complete written voice baseline, and both audio bindings exclude the source words and waveform.",
+        "The voice-over uses the exact phrase says in an off-screen voiceover, preserves <d>[Chinese] 我本来不信。</d>, and immediately states that her lips remain completely closed.",
+        "Shot 1 has no timestamp; Shot 2 uses 00:07.000; the prompt contains no @imageN, Chinese Seedance scaffolding, warning block, or 15秒。21:9。 footer.",
+        "Literal H3 angle-bracket tags are HTML-escaped in the DOM but copy back as their original text."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "继续一个已完成拆镜和分组的任务。平台无关的 PROMPT_GROUPS 已批准：Group A 包含镜头行 1.1、1.2、1.3，内部是三个连续镜头；Group B 包含镜头行 1.4、1.5。现在选择 MiniMax H3 I2VA；first_frame.png 是每个分组已经批准并映射好的精确首帧。请生成 HTML，不要重新拆分。",
+      "expected_output": "The H3 renderer preserves the approved two-group manifest exactly and serializes each group's internal shots with I2VA alignment and H3 timeline syntax instead of creating one prompt per shot.",
+      "files": [],
+      "expectations": [
+        "The HTML contains exactly two copyable H3 prompt blocks, one for Group A and one for Group B.",
+        "Group A remains one prompt containing rows 1.1, 1.2, and 1.3 as three ordered internal H3 shots.",
+        "Group B remains one prompt containing rows 1.4 and 1.5 in their original order.",
+        "The output does not perform an H3-specific split, merge, addition, deletion, or reorder of the approved groups.",
+        "Each copyable prompt begins with the exact I2VA first-frame alignment instruction and then uses H3 fields and timed [Shot N] syntax without Seedance-only prompt scaffolding."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "这是同一个任务的下一轮。我选择 MiniMax H3，但不上传任何图片、视频或音频，直接用文字做全部场景。",
+      "expected_output": "The skill stops at the H3 asset gate, explains that at least one intended reference input is required, and does not select a fallback mode or generate prompts.",
+      "files": [],
+      "expectations": [
+        "The response requests at least one valid H3 reference input and asks for its intended role.",
+        "The response does not generate H3 prompt fields or an HTML shotlist.",
+        "The response does not offer a text-only or no-upload fallback."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "继续一个前三阶段均已批准的 MiniMax H3 Ref2VA 任务。场景1-1：苏晚独自走进凌晨雨夜老街；suwan_character.png 锁定苏晚身份与服装，old_street_rain.png 锁定场景。原文旁白为：‘网上说，凌晨三点，雨不太大也不太小的时候，老街尽头会有一个纸鹤摊。只开十分钟。’请生成一个不超过15秒的导演化测试片段。",
+      "expected_output": "A bilingual Ref2VA clip that turns the voice-over into a progression from environmental uncertainty to private recognition, using only the two visible references, motivated framing/focus/cuts, closed lips, synchronized rain/footsteps, and a stable landing frame.",
+      "files": [],
+      "expectations": [
+        "Only Su Wan and the rain-soaked old street are defined as reference subjects; the output does not pad the prompt with stall, old man, crane, skyline, or other unused subjects.",
+        "The exact voice-over text and punctuation appear inside d payloads without a character-name prefix, colon, quotation marks, timing text, or stage directions.",
+        "The visible Su Wan's lips remain completely closed throughout the off-screen voice-over.",
+        "Every internal shot states framing and crop, camera height or angle, screen geography, focus, motivated camera behavior, action progression, and a stable landing state.",
+        "Every cut is motivated by gaze, semantic information, action, or focus transfer; the shots progress from space to recognition instead of repeating three generic rainy images.",
+        "The final readable pose holds for at least 0.8 seconds and non_diegetic_music is exactly N/A in both language versions.",
+        "Because no real audio reference was requested, neither prompt contains <Audio N>, Audio mode, audio reference, audio reuse, or an audio Retention line."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "继续一个前三阶段均已批准的 MiniMax H3 Ref2VA 任务。场景1-2：老人位于蓝布北侧朝南，苏晚位于南侧朝北，相距约1.8米，180度轴线已锁定。仅使用 suwan_character.png、oldman_character.png、paper_crane_stall.png、paper_cranes_set.png。原文台词：苏晚‘真能飞到？’；老人‘上一个客人。父亲走了四年，她今年刚考上研究生。’纸鹤从掌心真实地颤动、展开并飞起。请生成一个不超过15秒的测试片段。",
+      "expected_output": "A bilingual Ref2VA relationship scene that establishes geography, uses a necessary crane insert without breaking the axis, directs a physically causal paper-flight action, transfers focus through doubt/proof/reaction, and preserves restrained speaker/listener performance.",
+      "files": [],
+      "expectations": [
+        "Exactly four genuinely visible reference units are defined; hair, clothing, pose, expression, camera style, and action are not split into extra subjects.",
+        "The first vocal event is Su Wan as S1 and the second speaker is the old man as S2; each d payload contains only the exact audible source words.",
+        "The two-person coverage preserves north/south facing, about 1.8 meters of distance, screen-left/right positions, eyelines, foreground occlusion, and the approved 180-degree axis.",
+        "The crane insert is retained inside the same dramatic unit and shows a causal chain from stillness through rain disturbance, fold movement, weight shift, lift, and stable flight without magic particles or glowing effects.",
+        "Cuts transfer attention from doubt to physical proof to the old man's calm account and Su Wan's restrained reaction; no cut exists merely because a lens changes.",
+        "The old man's delivery is everyday and factual rather than mystical, Su Wan reacts with gaze/breath/eyelid changes rather than an exaggerated gasp, and the final state holds at least 0.8 seconds."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "继续一个前三阶段均已批准的 MiniMax H3 Ref2VA 任务。场景1-3始终停留在纸鹤摊现实层，不插医院闪回。只使用 suwan_character.png、oldman_character.png、paper_crane_stall.png。原文台词：苏晚‘她走那天，我迟到了。医院打电话说她快不行了，我在开会，手机静音。’老人全程沉默。请生成一个不超过15秒、以演员表演完整性为优先的测试片段。",
+      "expected_output": "A bilingual Ref2VA confession clip that chooses a motivated continuous take or the fewest necessary cuts, preserves both thought units and exact transcript, directs one-at-a-time micro-performance and listener response, and ends in audible/visible emotional residue rather than a mechanical dialogue cut.",
+      "files": [],
+      "expectations": [
+        "The two sentences remain in source order and exact punctuation, with Su Wan as the first and only vocal speaker S1; the silent old man receives no speaker ID.",
+        "The clip remains at the paper-crane stall in one time and reality layer and does not visualize the hospital phone call as a flashback.",
+        "The shot plan is justified by the dramatic unit: a 5-14 second uninterrupted take or necessary short insert is accepted and no cut is manufactured to satisfy a default shot count.",
+        "Performance progresses in observable order: pen tip stops, incomplete inhale, gaze stays on paper, first sentence lands, pause/swallow, second sentence loses support, post-line breath and silence remain.",
+        "The old man's listening is visible but restrained and timed after Su Wan's turn; he does not nod repeatedly, interrupt, or steal focus.",
+        "The final pen/rain/silence residue and stable pose last at least 0.8 seconds, while non_diegetic_music remains exactly N/A."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "继续一个已锁定 MiniMax H3 Ref2VA、资产与走位均已批准的长剧本任务。请制作全部场景。场景1是宿舍里江驰打游戏、被陆时衍发现身份异常，两人完成一轮追问和否认；场景2换到走廊，江驰追出去解释，陆时衍停下但没有回头。台词较长，包含片名、手机聊天和一段原作OS。",
+      "expected_output": "The skill first completes a full requested-scope H3 unit blueprint, routes title/chat text to post-production nodes by default, establishes stable character voice profiles, and delivers only the first 10–15-second unit as calibration before bulk expansion.",
+      "files": [],
+      "expectations": [
+        "The response shows total unit count, estimated packed runtime, and an ordered outline for both scenes before any final prompt expansion.",
+        "Every outlined unit has one scene, one micro relationship turn, one main action chain, an effective dialogue count, and a stable exit state.",
+        "Chinese dialogue uses the 10/12/15-second budget guidance and never exceeds 40 effective characters in one unit; long speech is split only at a natural semantic or dramatic boundary.",
+        "The original OS remains distinct from ordinary off-screen continuation, while title and phone-chat text become explicit post-production nodes with timing and placement.",
+        "A voice bible is established for recurring speakers and the first calibration unit contains equivalent voice evidence without changing the baseline profile.",
+        "Only the first unit receives complete English/Chinese H3 prompts in this turn; the remaining approved-scope units stay as a complete outline pending calibration approval.",
+        "The first unit ends with a fully specified stable exit state that can be restated as the next unit's opening state, and the adjacent boundary has one legal strategy."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "继续一个 MiniMax H3 双人对话任务。我上传了 linwan_voice.wav 和 juye_voice.wav，也有林晚与橘爷两个角色，请直接做中英文提示词。",
+      "expected_output": "The skill stops before blocking or prompt generation and asks the user to confirm an explicit one-to-one filename-to-character mapping and each file's reuse/reference role.",
+      "files": [],
+      "expectations": [
+        "The response presents one proposed row per exact filename and asks which named character or explicit off-screen source it locks to.",
+        "The response asks whether each asset is audio reuse or audio reference and what traits or time range should transfer or be excluded.",
+        "The mapping is not inferred from filename similarity, upload order, gender, or character order.",
+        "No Chinese director-storyboard prompt, English six-section prompt, or HTML deliverable is generated until the user explicitly confirms the map."
+      ]
+    }
+  ]
+}
