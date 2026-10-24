@@ -109,7 +109,7 @@ Treat the whole sheet as one `<Subject N>`, not four references. Name it `charac
 
 Render as photoreal live-action photography: natural skin texture, pores, hair strands, authentic fabric weave, plausible soft light, true depth-of-field falloff. Reject plastic, waxy, over-smoothed, illustrated or game-rendered finishes. Include side-specific detail — scars, asymmetrical garments, weapon carry, handedness — in the relevant view. Neutral standing pose, no choreography, no background.
 
-Never bake changing story states into a base sheet unless that state is the approved opening state. Generate recurring props separately when holder, location, orientation or condition changes. A style reference controls photography and grading only; it must not overwrite identity, wardrobe or period detail. Scene prompts default to empty-room (`空镜无人`) with explicit film stock bindings.
+Never bake changing story states into a base sheet unless that state is the approved opening state. A style reference controls photography and grading only; it must not overwrite identity, wardrobe or period detail. Scene prompts default to empty-room (`空镜无人`) with explicit film stock bindings.
 
 For `Seedance 2.0`, use this shape:
 
@@ -138,7 +138,7 @@ For `MiniMax H3`, list the same characters, locations, and props, then add optio
 - source videos used for editing, continuation, motion, cuts, or temporal structure;
 - voice timbre, ambience, diegetic playback, or other non-score audio references.
 
-Ask the user to upload intended references, state each file's role, and name the scene scope. H3 work in this skill requires at least one real submitted reference input and supports only I2VA, FL2VA, L2VA, and Ref2VA. Text-only H3 generation is outside scope.
+**Ask whether prop images are needed** — only recurring props that change holder, location, orientation or condition need a sheet. Then ask the user to upload intended references, state each file's role, and name the scene scope. H3 work in this skill requires at least one real submitted reference input and supports only I2VA, FL2VA, L2VA, and Ref2VA. Text-only H3 generation is outside scope.
 
 For every H3 production project, resolve audio-reference intent using [MINIMAX_H3_AUDIO_REFERENCE_BINDING.md](reference/MINIMAX_H3_AUDIO_REFERENCE_BINDING.md); `AUDIO_REFERENCE_INTENT` carries the answer and scope. Absent files and “no background music” are NOT refusal. `unknown` blocks final sound-bearing prompt delivery, not independent asset, layout, or timing work. Explicit refusal skips the upload map and uses the textual voice workflow. When requested, ask for the exact audio filename and target character/source; do not guess from order, filenames, or gender. Reuse an existing explicit decision; do not repeat the question per unit. Skill-only maintenance does not start a production intake.
 
