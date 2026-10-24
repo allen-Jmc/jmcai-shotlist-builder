@@ -48,11 +48,11 @@ Do not write H3 prompts while still discovering source beats. Finish the whole r
 
 ## Phase 2 — Request assets, then stop
 
-List script-derived assets in brief categories.
+List script-derived assets in brief categories. **Ask once, here, about both reference intents** — style (`STYLE_REFERENCE_INTENT`: a still, a video, or a named look) and audio (`AUDIO_REFERENCE_INTENT`) — and record each as `unknown`, `declined` or `requested`. Silence is not refusal. `unknown` never blocks style work, because [STYLE_BLOCK.md](reference/STYLE_BLOCK.md) supplies a default; `unknown` audio blocks final sound-bearing prompts.
 
 ### Reference-image aesthetics — explicit style request only
 
-**Ask once** whether the project has a style reference — a still, a video, or a named look — and record `STYLE_REFERENCE_INTENT` as `unknown`, `declined` or `requested`. Silence is not refusal, and `unknown` never blocks work because [STYLE_BLOCK.md](reference/STYLE_BLOCK.md) supplies a default. Activate this extension only when the user explicitly asks to borrow, match or transfer that style. An image upload alone does not activate it. Identity, wardrobe, prop, layout, or first/last-frame references retain their specified roles; do not silently treat them as style inputs. Reuse an explicit style decision within its stated scope until the user changes it.
+Activate this extension only when the user explicitly asks to borrow, match or transfer that style. An image upload alone does not activate it. Identity, wardrobe, prop, layout, or first/last-frame references retain their specified roles; do not silently treat them as style inputs. Reuse an explicit style decision within its stated scope until the user changes it.
 
 **Classify first; ask only when the guess would change the whole map.** Give every supplied image a role by inference — identity, wardrobe, prop, environment, first/last frame, composition or style. When a role is genuinely ambiguous, take the least disruptive assumption, state it in `retention_analysis` and keep working; never stall over a guess affecting one reference. Ask only when the assumption would change the entire map — for example, whether an image is the global style reference or an identity reference — because a wrong map poisons every downstream unit. Never drop an unclassifiable upload silently.
 
@@ -140,7 +140,7 @@ For `MiniMax H3`, list the same characters, locations, and props, then add optio
 
 Ask the user to upload intended references, state each file's role, and name the scene scope. H3 work in this skill requires at least one real submitted reference input and supports only I2VA, FL2VA, L2VA, and Ref2VA. Text-only H3 generation is outside scope.
 
-For every H3 production project, resolve audio-reference intent using [MINIMAX_H3_AUDIO_REFERENCE_BINDING.md](reference/MINIMAX_H3_AUDIO_REFERENCE_BINDING.md). Record `AUDIO_REFERENCE_INTENT` as `unknown`, `declined`, or `requested`, with the user's answer and scope. If not already stated, ask once whether the user wants audio/voice reference; silence, absent files, and “no background music” are NOT refusal. `unknown` blocks final sound-bearing prompt delivery, not independent asset, layout, or timing work. Explicit refusal skips the upload map and uses the textual voice workflow. When requested, ask for the exact audio filename and target character/source; do not guess from order, filenames, or gender. Reuse an existing explicit decision; do not repeat the question per unit. Skill-only maintenance does not start a production intake.
+For every H3 production project, resolve audio-reference intent using [MINIMAX_H3_AUDIO_REFERENCE_BINDING.md](reference/MINIMAX_H3_AUDIO_REFERENCE_BINDING.md); `AUDIO_REFERENCE_INTENT` carries the answer and scope. Absent files and “no background music” are NOT refusal. `unknown` blocks final sound-bearing prompt delivery, not independent asset, layout, or timing work. Explicit refusal skips the upload map and uses the textual voice workflow. When requested, ask for the exact audio filename and target character/source; do not guess from order, filenames, or gender. Reuse an existing explicit decision; do not repeat the question per unit. Skill-only maintenance does not start a production intake.
 
 Stop after the asset request. Do not continue to blocking or prompts in the same turn.
 
