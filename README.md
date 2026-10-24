@@ -1,6 +1,6 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-![Version](https://img.shields.io/badge/version-3.0.1-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.2-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
@@ -45,16 +45,16 @@ graph TD
 本系统内置智能路由选择器（`reference/MINIMAX_H3_ROUTING.md`），针对不同的剪辑与机位衔接诉求，自动锁定开篇法定申明与提示词架构：
 
 1. **`I2VA` (首帧精确锚定生成 · Image-to-Video Anchor)**
-   * **开篇申明**：`[首帧锚定生成] 严格沿用已确认的首帧画面起幅...`
+   * **开篇申明**：`[keyframe completion] 严格沿用已确认的首帧画面起幅...`
    * **适用场景**：从指定第一帧画面（如定妆图、上一单元尾帧或概念原画）向前自然推进动态。
 2. **`FL2VA` (首尾帧双向过渡生成 · First-and-Last-Frame Transition)**
-   * **开篇申明**：`[首尾帧过渡生成] 画面严格从首帧起始，并在结尾收敛过渡至指定的尾帧终幅...`
+   * **开篇申明**：`[keyframe completion] 画面严格从首帧起始，并在结尾收敛过渡至指定的尾帧终幅...`
    * **适用场景**：极度适合两极分镜头插值过渡（如：从主角近景推移到远景背影，或从静坐平滑过渡到站立凝视）。
 3. **`L2VA` (尾帧定向对齐生成 · Last-Frame Alignment)**
-   * **开篇申明**：`[尾帧对齐生成] 镜头动作终点收敛至指定的目标构图与人物姿态...`
+   * **开篇申明**：`[keyframe completion] 镜头动作终点收敛至指定的目标构图与人物姿态...`
    * **适用场景**：必须精准平滑对齐下一场次固定起幅或特定历史剧照。
 4. **`Ref2VA` (多参考图外观与环境继承生成 · Reference-based Video)**
-   * **开篇申明**：`[参考生成] 画面多主体外观继承自以下定义参考图...`
+   * **开篇申明**：`[reference generation] 画面多主体外观继承自以下定义参考图...`
    * **适用场景**：由多张角色立绘、四视图、场景空镜和道具参考拼合的大型叙事镜头，最广泛的叙事生产主力模式。
 
 ---

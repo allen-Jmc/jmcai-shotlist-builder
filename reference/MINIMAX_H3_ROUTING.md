@@ -147,7 +147,7 @@ Before placing an H3 prompt in the HTML, verify all applicable checks:
 - Subject slots use `<Subject N>`; every slot is defined before use and keeps one meaning throughout the prompt.
 - I2VA, FL2VA, or L2VA keyframe alignment is described by the opening/landing states inside the relevant shot; do not emit a separate Base-Mode preamble.
 - Shot numbers are consecutive, cut times increase, and the last shot ends at the declared clip duration.
-- Dialogue sits inside `<d>[中文] … </d>` with a `(Sx)` speaker binding; facial actions and camera directions stay outside the container.
+- Dialogue sits inside `<d>[Chinese] … </d>` with a `(Sx)` speaker binding; facial actions and camera directions stay outside the container.
 - If `AUDIO_REFERENCE_MAP` is active, show the exact filename, upload slot, and locked character in an operator checklist outside both copyable prompts. The `<Audio N>` label appears at the subject definition and again at its owning vocal event, carrying target source, `Audio mode`, `Retention`, scope, and exclusions. If the map is inactive, neither prompt contains audio-routing fields.
 
 ### Ref2VA

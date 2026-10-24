@@ -108,7 +108,7 @@ def chinese_machine_prompt(
 ) -> str:
     """构造合规的中文机读六段式测试夹具提示词。"""
     music = "稀疏钢琴单音在最后一个呼吸前进入，停在尾态前。" if scored else "无配乐。"
-    summary = "任务摘要：\n[参考生成] 目标视频展示 <Subject 1> 在窗边许下安静承诺。"
+    summary = "任务摘要：\n[reference generation] 目标视频展示 <Subject 1> 在窗边许下安静承诺。"
     retention = "保留分析：\n<Subject 1>：reference, 保留角色身份五官与服装，窗边站位与动作由本场景生成。"
     if bad_order:
         summary, retention = retention, summary
@@ -120,9 +120,9 @@ def chinese_machine_prompt(
 {retention}
 
 镜头详述：
-[镜头 1] 0.0—5.0秒。50毫米固定侧面中景，<Subject 1> 位于画面左侧，先看向窗外再收回视线。(S1) 以低中音语速说：
-<d>[中文]{dialogue}</d>
-[镜头 2] 00:05.000至00:12.000。正面近景，她闭口看向窗外，保持稳定姿势至结束。
+[Shot 1] 0.0—5.0秒。50毫米固定侧面中景，<Subject 1> 位于画面左侧，先看向窗外再收回视线。(S1) 以低中音语速说：
+<d>[Chinese]{dialogue}</d>
+[Shot 2] 00:05.000至00:12.000。正面近景，她闭口看向窗外，保持稳定姿势至结束。
 
 环境音响：
 安静室内底噪与轻微衣料摩擦声持续存在。

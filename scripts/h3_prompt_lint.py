@@ -26,6 +26,13 @@ EN_SHOT = re.compile(
     r"(?:\s+At\s+(?P<minute>\d{2}):(?P<second>\d{2}(?:\.\d{3})),)?",
     re.IGNORECASE,
 )
+# Chinese prompts share the [Shot N] marker but write cut times as `00:03.500 起`
+# instead of `At 00:03.500,`, so the `At` prefix and trailing comma are optional here.
+ZH_SHOT_MARK = re.compile(
+    r"\[(?:Shot|镜头)\s*(?P<number>\d+)\]"
+    r"(?:\s*(?:At\s+)?(?P<minute>\d{2}):(?P<second>\d{2}(?:\.\d{3})))?",
+    re.IGNORECASE,
+)
 REFERENCE_LABEL = re.compile(r"<(?:Subject|Picture|Video|Audio)\s+\d+>", re.IGNORECASE)
 AUDIO_LABEL = re.compile(r"<Audio\s+\d+>", re.IGNORECASE)
 AUDIO_FILENAME_IN_PROMPT = re.compile(
@@ -427,13 +434,15 @@ def lint_chinese_machine(prompt: str, index: int) -> tuple[list[str], list[re.Ma
     shots: list[re.Match[str]] = []
     if fields:
         desc = fields["镜头详述："]
-        shots = list(EN_SHOT.finditer(desc))
+        # Chinese prompts use the same [Shot N] marker as English, but write the cut
+        # time as `00:03.500 起` rather than `At 00:03.500,`. Accept both spellings.
+        shots = list(ZH_SHOT_MARK.finditer(desc))
         if not shots:
-            shots = list(re.finditer(r"\[镜头\s*(?P<number>\d+)\](?:\s+(?:At\s+)?(?P<minute>\d{2}):(?P<second>\d{2}(?:\.\d{3})))?", desc, re.IGNORECASE))
+            shots = list(EN_SHOT.finditer(desc))
         if not shots:
-            errors.append("镜头详述 中未找到合规的 [镜头 N] 标记")
+            errors.append("镜头详述 中未找到合规的 [Shot N] 标记")
         if not re.match(r"^\[[^\]\n]+\]\s+", fields["任务摘要："]):
-            errors.append("任务摘要 必须以方括号开头的任务类型前缀开始，例如 [参考生成]")
+            errors.append("任务摘要 必须以方括号开头的任务类型前缀开始，例如 [reference generation]")
     return [f"Chinese machine block {index}: {e}" for e in errors], shots
 
 
