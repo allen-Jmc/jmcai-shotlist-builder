@@ -73,46 +73,12 @@ Choose only the vocal parameters that carry this specific dramatic action:
 
 Avoid voice-parameter inventories. A baseline voice plus one audible change at the turn and one ending behavior is usually enough. Contradictory adjective piles produce generic acting.
 
-### Vocal tag notation — a writing convention, not a platform contract
+### Vocal tag notation
 
-When the project's workflow uses inline vocal tags, keep their exact spelling and the paired-versus-standalone distinction. These tags are a **writing convention**: they work because the model reads them as compact delivery instructions, not because the platform documents them as parser syntax. Never present them to the user as verified H3 API fields.
-
-| Tag | Effect |
-| --- | --- |
-| `<pause>` | short pause |
-| `<long pause>` | long pause, holds the silence |
-| `<i>word</i>` | stress the enclosed word |
-| `<whisper>line</whisper>` | speak the enclosed line in a whisper |
-| `<softer>` | drop volume for what follows |
-| `<humming>syllables</humming>` | hum the enclosed syllables |
-| `<breath>` | insert a breath sound |
-| `<inhale>` / `<exhale>` | inhale / exhale |
-| `<deep breath>` | deep breath, to prepare or to recover |
-| `<catches breath>` | stop to catch a breath |
-| `<pant>` / `<pants>` | rapid panting |
-| `<laughs>` / `<chuckle>` | laugh aloud / short soft laugh |
-| `<sighs>` | sigh |
-| `<gasp>` | sudden sharp inhale |
-| `<mhm>` | agreement hum |
-| `<phew>` | relief exhale |
-| `<groan>` | low groan or complaint |
-| `<uh>` / `<hmm>` | hesitation / thinking sound |
-| `<stutter>` | stutter, repetition, or broken articulation |
-| `<coughs>` / `<clears throat>` | cough / clear the throat |
-| `<sniff>` | sniff |
-| `<smacks lips></smacks lips>` | lip smack |
-| `[Chinese]` / `[English]` | declare the dialogue language |
-| `[Chinese, crying]` | language plus crying delivery |
-| `[Chinese, singing]` | language plus sung delivery |
-| `[Hum]` | hum a melody |
-
-Rules:
-
-- **Paired tags must close** (`<whisper>…</whisper>`); standalone tags (`<pause>`, `<inhale>`) take no closing tag. Never invent a closing tag for a standalone tag.
-- **Tags go inside `<d>`**, together with the dialogue and the language marker. Facial actions, body acting, and camera directions stay outside `<d>`.
-- **Tags cost duration.** A pause or a breath occupies clip time. Never fit a long line, a long pause, and dense micro-actions into one short window.
-- **Language and singing markers are audible instructions, not subtitles.** Do not generate on-screen captions from them.
-- **Degrade gracefully.** If the target environment is known not to honour these tags, express the same delivery in plain prose ("she pauses, then says it more quietly") rather than dropping the direction. Do not attach compatibility disclaimers to every prompt.
+Inline vocal tags are a writing convention, not a verified platform contract. The full
+tag table, the paired-versus-standalone rules, the duration cost and the graceful
+degradation rule live in [ACTING_QUICK_REFERENCE.md](ACTING_QUICK_REFERENCE.md) §A1.
+Select notation there; shape and deliver the line here.
 
 ## 6. Bind voice and body to the same inner event
 
