@@ -92,10 +92,10 @@ This opening rule applies to image asset prompts, not to the fixed Seedance/H3 v
 
 ### Character asset-generation rule
 
-Apply this extension only when the user asks to generate character assets or text-to-image prompts for them. Read [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md) for the full cinematic engineering rules, Jimeng 5 / Midjourney templates, film stock matrices, pre-flight linting, the four-view layout in §2, and the mask rules in §10.
+Apply this only when the user asks for character assets or text-to-image prompts. Read [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md) for the engineering rules, Jimeng 5 / MJ templates, film stock matrices, pre-flight linting, the four-view layout in §2 and the mask rules in §10.
 
 **Two-Track Asset Delivery:**
-- **Track A (Jimeng 5 / MJ Single Concept Portrait)**: one concise Chinese paragraph, full-body standing pose or head-and-shoulders closeup. Used to test and lock the actor's hero face.
+- **Track A (Jimeng 5 / MJ Single Concept Portrait)**: one concise Chinese paragraph, full-body standing pose or head-and-shoulders closeup. Used to test and lock the actor's hero face. **Casting only** — with one or two characters and a face already approved, skip it and go straight to Track B.
 - **Track B (Industrial Four-View Production Sheet)**: the authoritative reference for video engines such as MiniMax H3 `<Subject N>`. One sheet per named character, before any scene or action keyframe.
 
 **Three Engineering Iron Rules** — mandatory in both tracks:
@@ -105,11 +105,11 @@ Apply this extension only when the user asks to generate character assets or tex
 
 **Four-view layout** — left quarter is one front-facing facial close-up cropped at the neck; right three quarters are equally spaced front / side / back full-body views on one floor line, aligned head-top to head-top and sole to sole. The front body view's face carries a flat light-grey mask; the side and back views keep complete heads. Seamless pure-white background, no panels, dividers, borders, captions, labels or text, no nine-grid, no collage, no extra people or duplicate poses. Mask constraints, the headless fallback, and the per-view alignment requirements are in §10; the composition specification is in §2.
 
-Treat the whole sheet as one `<Subject N>` when mapping it for H3, not four separate references. Name the file `character_<name>_fourview.png` and label it `identity + wardrobe reference` in the operator-facing asset list, outside the copyable prompt.
+Treat the whole sheet as one `<Subject N>`, not four references. Name it `character_<name>_fourview.png` and label it `identity + wardrobe reference` in the operator-facing asset list, outside the copyable prompt.
 
-Render as photoreal live-action photography: natural skin texture, pores, hair strands, authentic fabric weave, physically plausible soft light, true depth-of-field falloff, true-to-life color. Reject plastic, waxy, over-smoothed, illustrated or game-rendered finishes. Include side-specific detail — scars, asymmetrical garments, weapon carry, handedness — in the relevant view. Neutral standing pose, no choreography, no scene background.
+Render as photoreal live-action photography: natural skin texture, pores, hair strands, authentic fabric weave, plausible soft light, true depth-of-field falloff. Reject plastic, waxy, over-smoothed, illustrated or game-rendered finishes. Include side-specific detail — scars, asymmetrical garments, weapon carry, handedness — in the relevant view. Neutral standing pose, no choreography, no background.
 
-Do not bake changing story states into a base sheet unless that state is the character's approved opening state. Generate recurring props as separate assets when holder, location, orientation or condition changes during the story. A style reference may control photography and grading only; it must not overwrite identity, wardrobe or period detail. Scene prompts default to empty-room (`空镜无人`) with explicit film stock bindings.
+Never bake changing story states into a base sheet unless that state is the approved opening state. Generate recurring props separately when holder, location, orientation or condition changes. A style reference controls photography and grading only; it must not overwrite identity, wardrobe or period detail. Scene prompts default to empty-room (`空镜无人`) with explicit film stock bindings.
 
 For `Seedance 2.0`, use this shape:
 
