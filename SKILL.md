@@ -156,6 +156,8 @@ Stop after the asset request. Do not continue to blocking or prompts in the same
 
 After uploads:
 
+Before mapping anything, run the delivered-asset acceptance pass in [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md) §14 and record one character lock card per approved character. A returned sheet that fails the layout, mask, background, hand, or identity-consistency checks is not an approved asset: say what failed, and choose between a targeted retouch, a rerun, or accepting it with the detail written into the lock card. A prompt that passed pre-flight lint does not prove the delivered image is usable.
+
 1. Confirm scene scope.
 2. Map every filename to an explicit asset. Ask only when a filename or role is genuinely ambiguous; never auto-assign silently.
    - If the conditional audio gate is active, build `AUDIO_REFERENCE_MAP` before any prompt prose. Confirm one row per audio file: exact operator-side filename, clip-local upload slot, one locked character/source, vocal role, `audio reuse` or `audio reference`, compatible retention marker, copied/referenced scope, and excluded layers. Default to one slot per character and one active voice file per character. Resolve ambiguity and obtain explicit approval before continuing. Keep filenames in the operator map only; never serialize them into a copyable model prompt.
