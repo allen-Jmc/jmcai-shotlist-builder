@@ -92,32 +92,24 @@ This opening rule applies to image asset prompts, not to the fixed Seedance/H3 v
 
 ### Character asset-generation rule
 
-Apply this extension only when the current user asks to generate character assets or asks for text-to-image prompts for them. Read [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md) for full cinematic engineering rules, Jimeng 5 / Midjourney prompt templates, film stock matrices, and pre-flight linting.
+Apply this extension only when the user asks to generate character assets or text-to-image prompts for them. Read [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md) for the full cinematic engineering rules, Jimeng 5 / Midjourney templates, film stock matrices, pre-flight linting, the four-view layout in §2, and the mask rules in §10.
 
-To balance rapid character-face exploration with multi-shot video generation consistency, character assets support a **Two-Track Asset Delivery**:
-- **Track A (Jimeng 5 / MJ Single Concept Portrait)**: A concise, one-paragraph prompt (all in Chinese, no section numbering, no negative words, no English commands) describing a full-body standing pose or head-and-shoulder closeup. Used by operators to test and lock the actor's hero facial look in Jimeng 5 or Midjourney.
-- **Track B (Industrial Four-View Production Sheet)**: The authoritative production reference for video engines (such as MiniMax H3 `<Subject N>`). A four-view character sheet per named character before requesting scene/action keyframes.
+**Two-Track Asset Delivery:**
+- **Track A (Jimeng 5 / MJ Single Concept Portrait)**: one concise Chinese paragraph, full-body standing pose or head-and-shoulders closeup. Used to test and lock the actor's hero face.
+- **Track B (Industrial Four-View Production Sheet)**: the authoritative reference for video engines such as MiniMax H3 `<Subject N>`. One sheet per named character, before any scene or action keyframe.
 
-For both tracks, every character prompt MUST strictly enforce the **Three Engineering Iron Rules**:
-1. **Ethnic & Facial Anatomy**: Explicitly state `中国男生/女生，亚洲面孔，东亚五官` to prevent Western facial structure or accidental Eurasian hybrid features.
-2. **Anti-Waxy & Anti-Oily Matte Texture**: Explicitly state `哑光妆效/哑光皮肤质感，无油光，不泛油，皮肤通透` to eliminate AI plastic waxiness, over-smoothing, and specular glare.
-3. **Symmetrical Eyes Open**: Explicitly state `双眼都睁开，对称双眼` followed by gaze direction/intent to eliminate winks, strabismus, or asymmetric ptosis.
+**Three Engineering Iron Rules** — mandatory in both tracks:
+1. **Ethnic and facial anatomy**: state `中国男生/女生，亚洲面孔，东亚五官` explicitly.
+2. **Anti-waxy matte texture**: state `哑光妆效/哑光皮肤质感，无油光，不泛油，皮肤通透`.
+3. **Symmetrical eyes open**: state `双眼都睁开，对称双眼` plus gaze direction.
 
-Use the project's already approved four-view convention verbatim when one exists in the current conversation or supplied production material. Otherwise use this default **four-view production layout**. It is an asymmetric composition, not a boxed 2×2 grid:
+**Four-view layout** — left quarter is one front-facing facial close-up cropped at the neck; right three quarters are equally spaced front / side / back full-body views on one floor line, aligned head-top to head-top and sole to sole. The front body view's face carries a flat light-grey mask; the side and back views keep complete heads. Seamless pure-white background, no panels, dividers, borders, captions, labels or text, no nine-grid, no collage, no extra people or duplicate poses. Mask constraints, the headless fallback, and the per-view alignment requirements are in §10; the composition specification is in §2.
 
-- Use a horizontal 16:9 canvas with a seamless pure-white background and a professional asymmetric character-specification layout. Do not draw panels, dividers, borders, frames, captions, labels, logos, watermarks, any text, a nine-grid layout, or a collage.
-- Reserve roughly the left quarter for one front-facing facial close-up, cropped at the neck. It must strictly embed the Three Iron Rules, natural skin texture, facial bone structure (jawline, nose bridge), hair direction with fine flyaway strands, makeup, and high-detail upper garment neckline.
-- Reserve the right three quarters for three equally spaced, parallel full-body views arranged left to right: a **front body view whose face is covered by a flat light-grey fill**, a full **side profile with the complete head retained**, and a full **back view with the complete head retained**. The flat-grey mask applies only to the front body view; keep that view's head silhouette and head-to-body ratio fully intact. Never crop or omit the head, and never substitute a blank face, blur, hood, or extra head. Never mask the side profile — its face stays fully visible.
-- The flat-grey mask is a featureless neutral fill: no material, no shading gradient, no edge line, no strap, and nothing that reads as a bandage, helmet, or mask. State explicitly that the front body view shows no eyes, nose, or mouth. It exists only to stop H3 from taking a face from this view.
-- Put all three body views on the same implied floor line. Keep their body scale, shoulder level, footwear contact, garment length, base prop placement, camera height, and head-top height identical across all three, so they align head-top to head-top and sole to sole. The front body view is not exempt from head-top alignment.
-- Fallback: if the target image model keeps turning the flat fill into a mask, bandage, or hood, or keeps inventing facial features on it, switch that character's sheet to a neck-cropped headless front body view instead. Leave the side and back views unchanged. Record which variant the sheet uses in the operator-facing asset list.
-- Keep all four presentations recognizably the same individual, but do not add any extra people or unintended duplicate poses beyond the one face close-up and the three required body views.
+Treat the whole sheet as one `<Subject N>` when mapping it for H3, not four separate references. Name the file `character_<name>_fourview.png` and label it `identity + wardrobe reference` in the operator-facing asset list, outside the copyable prompt.
 
-Render the sheet as photoreal live-action camera photography with a native-camera-out look: natural skin texture, pores, facial hair, hair strands, authentic fabric weave (e.g. piqué cotton, tailored wool, washed denim, natural leather wear), realistic stitching; physically plausible soft natural light; authentic depth-of-field falloff; and true-to-life color. Reject plastic, waxy, over-smoothed, illustrated, game-rendered, or visibly AI-generated finishes. Include side-specific information—scars, injuries, asymmetrical garments, weapon carry, or handedness—in the relevant view. Use a neutral standing pose with no action choreography or scene background.
+Render as photoreal live-action photography: natural skin texture, pores, hair strands, authentic fabric weave, physically plausible soft light, true depth-of-field falloff, true-to-life color. Reject plastic, waxy, over-smoothed, illustrated or game-rendered finishes. Include side-specific detail — scars, asymmetrical garments, weapon carry, handedness — in the relevant view. Neutral standing pose, no choreography, no scene background.
 
-Do not bake changing story states—fresh blood, damage gained later, a dropped prop, or a scene-specific pose—into a base character sheet unless that state is explicitly the character's approved opening state. Generate independent recurring props as separate assets when their holder, location, orientation, or condition must change during the story (apply 45-degree floating product display templates from [PROMPT_TEMPLATE_ASSET_EXPANSION.md](reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md)). A style reference may control photography and grading only; it must not overwrite the four-view character's identity, wardrobe, or period/world details. Scene prompts default to empty-room / no-people (`空镜无人`) with explicit film stock bindings.
-
-When writing text-to-image prompts, name the expected file as `character_<name>_fourview.png` and identify it as an `identity + wardrobe reference` in the operator-facing asset list, outside the copyable prompt. When mapping it for H3, treat the entire four-view sheet as one reusable `<Subject N>`, not four separate reference units.
+Do not bake changing story states into a base sheet unless that state is the character's approved opening state. Generate recurring props as separate assets when holder, location, orientation or condition changes during the story. A style reference may control photography and grading only; it must not overwrite identity, wardrobe or period detail. Scene prompts default to empty-room (`空镜无人`) with explicit film stock bindings.
 
 For `Seedance 2.0`, use this shape:
 
@@ -208,89 +200,9 @@ Read [MINIMAX_H3_LONG_SCRIPT_UNITS.md](reference/MINIMAX_H3_LONG_SCRIPT_UNITS.md
 
 Every unit ships exactly **two** copyable prompts: a Chinese six-section prompt and an English six-section companion, both compiled from one unit truth. The Chinese prompt follows [MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md](reference/MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md); the English companion follows [MINIMAX_H3_FULL_REFERENCE_EN.md](reference/MINIMAX_H3_FULL_REFERENCE_EN.md).
 
-The six Chinese top-level sections are `主体定义：`, `任务摘要：`, `保留分析：`, `镜头详述：`, `环境音响：`, `非剧情音乐：`. The six English fields are `subject_definitions:`, `summary:`, `retention_analysis:`, `detailed_description:`, `overall_soundscape:`, `non_diegetic_music:`. **There is no third prompt and no review-only storyboard block.**
+The six Chinese sections are `主体定义：`, `任务摘要：`, `保留分析：`, `镜头详述：`, `环境音响：`, `非剧情音乐：`. The six English fields are `subject_definitions:`, `summary:`, `retention_analysis:`, `detailed_description:`, `overall_soundscape:`, `non_diegetic_music:`. **There is no third prompt and no review-only storyboard block.**
 
-The directing rules below apply to both serializations.
-
-- The official Base Mode guide informs the internal timeline, keyframe routing, camera, dialogue, and sound design, but its English field names are not copied into the Chinese prompt.
-- The Chinese prompt keeps the six top-level sections above and binds subjects through `<Subject N>` slots. When `AUDIO_REFERENCE_MAP` is active, keep the filename/slot rows in a separate operator upload checklist, use the confirmed `<Audio N>` label at the subject definition and again at the owning vocal event, and carry the target character/source, `Audio mode`, `Retention`, referenced scope, and exclusions there. Express the full written voice baseline and playable delivery naturally in Chinese as well; the audio token reinforces rather than replaces them.
-- Use one strong submitted keyframe per unit whenever possible. Treat prior clips, character sheets, scene images, props, and style boards as production references for building that keyframe and define their actual roles in the English companion.
-- Every independent unit is self-contained. Never write `承接上一段`, `承接 H3-001`, `同前`, `沿用上一条`, or any equivalent relative instruction inside the copyable prompt. Replace it with the complete opening geometry: location/time, light/weather, active identity and wardrobe, left/right/depth positions, eyelines, significant prop holder/location/state, and current sound bed.
-- Every shot has a continuous Chinese time range. The ranges must cover the requested duration without overlap or gaps.
-- State lens, framing, angle, screen geography, movement pace, current light, action onset/change/result, and visible performance chronologically in each shot.
-- Allocate each shot's time from its actual screen event, not from an even division of the unit duration. Before prose, give every internal shot a timing chain: `entry trigger → visible development → information/dialogue landing → cut trigger or stable exit`. A character walking toward a prop, noticing it, bending down, opening it, and lifting it are separate playable phases; keep them in one shot only while the camera can follow the changing action without losing clarity.
-- Cut when the current shot's promised action or information lands: a gaze reaches the discovered prop, a hand completes a pickup, a body crosses into a new posture, a line finishes, a listener receives its meaning, or a new action begins. Do not let a character reach the intended pose and then remain visibly idle merely to consume assigned seconds. Reassign that time to an earlier action, a source-grounded reaction, the following action, or a stable final handle; if none is justified, shorten the shot or repack the unit.
-- A quiet hold is valid only when it carries a readable ongoing process—listening, deciding, an unfolding micro-expression, environmental pressure, or the final 0.8–1.0-second edit handle. Describe what remains alive in that hold. “Camera holds after she stops” without new observable information is a timing failure.
-- When a user supplies an exact dialogue start time, test it against the locked words at the approved natural speech rate plus a stable tail handle. If it would force rushed speech or leave less than a safe tail, explain the conflict and move the cue to the nearest viable time, split the unit, or request a user decision; never silently accelerate the line or extend a unit beyond 15 seconds.
-- Give every audible line an explicit absolute in-shot start and end time before serializing its text. Reserve a named pre-line window for the visible thought/breath/action, place the dialogue itself inside its timed window, and reserve its consequence separately. Never state only a shot range and leave the model to decide when the speaker begins. When spoken words are the shot's primary new information, begin them promptly after the necessary pre-line beat rather than letting preparatory acting consume the shot; for visible speech, keep the speaker's mouth readable at the line's exact start.
-- Direct every significant visible action as `onset → change → readable result`. Do not cut before the audience can understand its result, and do not reserve a whole shot for the result after it has become static unless the resulting state itself changes the relationship or carries the final handle.
-- Every reaction has a named trigger and a chronological route: receive the sound/image → gaze or body registers it → visible change. A reaction shot may not be a generic facial pause. Give it the time it needs to alter meaning, then cut when that alteration lands.
-- Protect attention around dialogue. Do not put a line that carries new information on top of an unrelated complex manipulation or rapid reframing. Let the crucial action become readable before the line, or let the line land over a simple, controlled action; reserve the post-line shot or tail for the listener's consequence.
-- Each camera move needs an arrival condition: reveal a prop, close a relationship distance, transfer focus, expose a reaction, or land on an exit image. Each cut needs a new fact, changed point of view, action handoff, eye-line handoff, sound handoff, or emotional turn. A new focal length or a closer crop alone does not earn a cut.
-- Assign shot size by information function: wide for spatial orientation or entrance, medium for action and relationship geometry, close for a detail, line landing, or readable performance. Avoid consecutive scale changes that repeat the same information. When several adjacent shots share the same scale, tempo, and emotional temperature, vary the shot only when the screenplay supplies a new action or perception.
-- Design every edit as an action handoff: the outgoing shot supplies the trigger (`notice`, `reach`, `finish line`, `turn`); the incoming shot begins with its physical or perceptual consequence (`bend`, `open`, `listen`, `answer`, `move closer`). Preserve the relevant body, eyeline, prop, and sound state across that handoff.
-- Write the delivery cue outside the dialogue container, then place the verbatim line inside `<d>`: `甲以低中音、偏冷偏干的声线和短促命令感说：` followed by `<Subject 1> (S1): <d>[Chinese]请把门打开。</d>`. Keep facial actions and camera directions outside `<d>`. The line itself stays word-for-word; only the delivery prose may change.
-- Put post-line reactions in the next silent shot whenever possible. Do not append a long acting instruction immediately after the closing quotation mark.
-
-Immediately after the Chinese block, output an English full-reference companion with exactly these six fields in this order:
-
-```text
-subject_definitions:
-...
-
-summary:
-...
-
-retention_analysis:
-...
-
-detailed_description:
-...
-
-overall_soundscape:
-...
-
-non_diegetic_music:
-...
-```
-
-- Write all explanatory prose in English. Preserve dialogue, lyrics, and approved model-rendered visible text in their original language.
-- Define only the real reference units used by the current clip and keep `<Subject N>`, `<Picture N>`, `<Video N>`, and `<Audio N>` meanings stable across all six sections.
-- When `AUDIO_REFERENCE_MAP` is active, every English `<Audio N>` definition names the semantic role and the same locked character/source, without any filename. Its number must equal the operator checklist's actual upload slot; the `summary`, `retention_analysis`, and owning vocal event must preserve the same mode and scope. When inactive, do not invent an audio label merely because a character speaks.
-- Use `[Shot 1]` without a timestamp, then `[Shot N] At MM:SS.mmm, ...` for later cuts. These cut times, shot count, shot order, action phases, and exit state must match the Chinese prompt exactly.
-- Assign `(S1)`, `(S2)`, and later IDs by first audible-event order inside the unit. Bind every `<d>` event to the real speaking character or explicit off-screen source in the immediately preceding vocal clause.
-- Preserve every approved spoken line inside `<d>[Language] ...</d>` without translating or paraphrasing it. The Chinese block keeps its colon-plus-next-line boundary and contains none of these tags.
-- Translate the Chinese `音乐：` decision faithfully: `无配乐。` becomes `non_diegetic_music: N/A`; a concrete score cue keeps the same instrumentation/texture, pulse, entry, and exit.
-- Preserve the anti-subtitle intent in both blocks. Dialogue exists as character audio; do not generate subtitles, translations, dialogue text, captions, titles, speech bubbles, or unintended readable screen text unless a model-rendered text event is explicitly approved.
-- Treat [MINIMAX_H3_DUAL_PROMPT_CONTRACT.md](reference/MINIMAX_H3_DUAL_PROMPT_CONTRACT.md) as the parity authority. An edit to timing, blocking, dialogue, sound, props, or exit state is incomplete until both blocks are synchronized.
-
-Each `H3_UNIT` is one independently generated, self-contained file. Dialogue-led narrative units normally last 10–15 seconds, carry one relationship turn and one action chain, obey the recommended speech budget and 40-effective-character hard ceiling, and end on a stable state that is fully restated at the next unit's opening. Use 5–9.99 seconds only for a documented exception allowed by the long-script reference. Never exceed 15 seconds.
-
-Before prose, compile for every unit:
-
-- owned `SOURCE_BEATS`, `CLIP_TRUTH_LEDGER`, and relevant `PROP_STATE_CHAIN` entries;
-- `OPENING_STATE`, `relationship_turn`, `action_chain`, and `exit_state`;
-- `DIRECTOR_INTENT` and one `SHOT_SCORE` per internal shot;
-- one internal `EMOTIONAL_RHYTHM_MAP` with opening pressure, exact trigger, turn, release-or-withholding, afterimage, source-grounded visual motif, sonic pulse, and a time-specific tempo curve. Each shot must express an audiovisual cause-and-effect link from that map rather than merely restating plot;
-- one internal `SCENE_RHYTHM_MAP` for every multi-shot unit and full requested scope: mark each shot's primary event, trigger, cut reason, information function, dialogue/action load, shot-size progression, hold justification, and the local tempo rise/fall. Across any run of three to five shots, flag repeated scale, camera speed, or emotional intensity that does not add new information. This is a directing check, not a user-facing H3 field;
-- the current speakers' verbatim `VOICE_BIBLE` entries and exact speech map;
-- the recorded `AUDIO_REFERENCE_INTENT` decision and approved `AUDIO_REFERENCE_MAP` rows used by the current unit, or an explicit `declined` decision for the no-reference workflow; `unknown` is unresolved, not inactive approval;
-- when the micro-expression trigger applies, one `MICRO_PERFORMANCE_SCORE` bound to an exact shot and time window, containing the outward mask, hidden emotion, trigger, baseline, first leak, suppression, optional reset, after-state, polarity lock, and 1-5 chronological observable action chains;
-- a full-scene `SCENE_SHOT_LADDER` and exactly one `CLIP_BOUNDARY_LEDGER` for each adjacent unit pair.
-
-Design both sides of every boundary together. Use exactly one strategy: `exact_match_continuation`, `contrast_cut`, `neutral_bridge`, or `scene_transition`. Reject accidental same-axis near-scale resets, unseen action/prop changes, generic frontal restarts, and text-only continuity claims.
-
-Compile chronological, directly filmable natural language. State motivated framing and crop, camera height/angle, screen geography, focus, action onset/change/result, performance before/during/after speech, cut trigger, synchronized sound, prop opening/exit state, and the final 0.8–1.0-second stable pose. When a `MICRO_PERFORMANCE_SCORE` applies, serialize its visible cues only inside the owning shot, at normal physical speed and in causal order; do not add a new output field. Every cut must add information or change viewpoint. Long voice-over uses composition that makes the mouth unreadable, not only a closed-lips sentence.
-
-Treat the final `镜头设计` as an executable shooting description, never as advice to the prompt writer. Commit to one frame for every shot. Phrases that offer alternatives or describe a future authoring decision—such as “use a wide, rear three-quarter, or object-led view,” “cut on the first decisive action,” “add the next source fact,” “switch scale when the information lands,” or their equivalents—are build failures. Replace them with the chosen shot size, side, height, lens/field of view, screen position, exact action or spoken-word trigger, and visible result. A generic template may help organize metadata, but it may not generate or supply final shot prose.
-
-Bind every vocal event to its real visible or off-screen source before serialization. In the Chinese prompt, name the source in natural Chinese prose and state that character's full locked `VOICE_BIBLE` baseline at its first vocal event in the unit: identity where relevant, register, resonance, timbre, usual volume, articulation, habitual breath/cadence, and the one or two wrong readings to avoid. Keep the exact same baseline string for that character in every independent unit. A real submitted audio reference reinforces that written baseline and is cited through its confirmed `<Audio N>` in both the Chinese vocal event and the English companion; it does not remove the Chinese self-contained textual definition.
-
-Write line-specific pressure, operative phrase, pace, pause, breath timing, and sentence ending immediately before the dialogue line. Keep only the exact approved line on that next line. Do not append bracketed “non-spoken” notes, translations, negative-prompt blocks, or long acting notes immediately after it. Put the reaction or hold into the following silent shot whenever possible. For VO, say `以画外音说` and choose a composition where unintended lip movement is not readable.
-
-After calibration approval, preserve the approved calibration unit byte-for-byte unless the user explicitly revises it. Bulk expansion must author every remaining unit from its own `SHOT_SCORE`; do not replace the approved unit or the remaining units with a shared prose generator.
-
-Output one authoritative prompt pair per unit: the Chinese six-section prompt first and the English six-section companion second. Keep original-language dialogue and visible text verbatim in both. Resolve the user's score policy first: a no-background-music instruction locks “无配乐。” / `non_diegetic_music: N/A` throughout the requested scope. Otherwise use the source or approved directing decision to choose silence or a concrete cue with instrumentation/texture, pulse, entry, and exit. Diegetic music stays inside the matching shot timeline in both serializations, only when supported by the source and not excluded by the user.
+The directing rules that govern both serializations — opening geometry, shot timing chains, cut triggers, reaction routes, dialogue protection, camera-move arrival conditions, shot-size assignment, action handoffs, and the delivery-cue/`<d>` boundary — are in [H3_UNIT_DIRECTING_RULES.md](reference/H3_UNIT_DIRECTING_RULES.md). They are mandatory, not advisory.
 
 ### HTML delivery
 
@@ -335,44 +247,9 @@ When the user requests revisions after delivery, edit and re-present the HTML ra
 
 ## Final review
 
-Before H3 delivery:
+Before H3 delivery, run the three linters — `scripts/h3_prompt_lint.py`, `scripts/h3_unit_lint.py`, `scripts/h3_upload_order_lint.py` — and then work through the full gate in [FINAL_QUALITY_GATE.md](reference/FINAL_QUALITY_GATE.md).
 
-1. Confirm authority separation, source-beat closure, prop-chain closure, transcript fidelity, and post-node routing.
-2. Confirm every unit has one scene, one relationship turn, one action chain, complete opening/exit states, valid duration, valid speech budget, and stable head/tail handles.
-3. Confirm the scene shot ladder is continuous and `N` adjacent units have exactly `N-1` complete boundary ledgers.
-4. Confirm prompt nouns and soundscapes pass per-unit truth isolation; voice profiles remain stable and performance is playable rather than generic. Audit each `EMOTIONAL_RHYTHM_MAP`: opening pressure, exact trigger, one turn, visual motif, sonic pulse, tempo curve, and afterimage must all have observable evidence in final shot prose.
-5. When a submitted style reference is declared global, audit every unit's reference list: the same style file must be present everywhere, no unit may exceed the platform reference cap, and any displaced reference must be a non-critical environment/secondary input with its scene truth still written explicitly.
-5a. When `AUDIO_REFERENCE_MAP` is active, audit the operator checklist's exact filename spelling, real upload order, one-to-one character/source locks, unique audio labels, compatible mode/retention markers, and copied/referenced scope. Confirm both prompts use the checklist's slot labels at the correct vocal events; confirm the Chinese `主体定义：` contains one filename-free compact binding line per active label and no source filename. When inactive, confirm neither prompt contains `<Audio N>`, `Audio mode`, `Retention`, `audio reuse`, or `audio reference` routing language.
-6. Confirm the Chinese prompt uses the six canonical sections in order (`主体定义：` → `任务摘要：` → `保留分析：` → `镜头详述：` → `环境音响：` → `非剧情音乐：`), that cut times inside `镜头详述：` increase without gaps or overlap, and that exactly one copyable Chinese prompt and one copyable English prompt exist for the unit with matching shot counts and cut times. When score is used, confirm its texture, pulse, entry, and exit are concrete and do not duplicate diegetic sound.
-7. Confirm every spoken line remains verbatim on the line immediately following its delivery colon. Confirm the voice baseline and line delivery appear before it, and that no tag, bracketed instruction, quotation wrapper, or long acting note follows the dialogue in the same beat.
-8. Search the submission prompt for authoring-template leakage and option language. Reject phrases that defer the actual shot choice, refer to a “next source fact,” use generic event placeholders, or instruct the writer/model to choose among several framings.
-9. Confirm every audible speaker repeats a complete, self-contained voice baseline within that unit and that no dialogue direction says to match H3-001, the previous unit, or any unseen clip. A real audio reference may reinforce the match, but it does not remove this textual requirement.
-10. When no audio reference is bound, compare every speaking unit for each character against the locked baseline string. Reject omissions, abbreviations, paraphrases that change acoustic meaning, or line delivery that contradicts the baseline. For VO split across shots, confirm an explicit continuous-event bridge.
-11. For each triggered `MICRO_PERFORMANCE_SCORE`, confirm that the cue is visible at the chosen scale, caused by current scene truth, chronological rather than stacked, compatible with speech and lip sync, and carried into a polarity-consistent after-state in both prompt blocks. Reject decorative blinking, swallowing, tears, smiles, or hand business that does not change the dramatic reading.
-12. Recompute `PACKED_RUNTIME` from the final unit records and compare it with every visible project and scene subtotal. Do not trust a previously approved or hand-entered total.
-13. Run both deliverable linters and the permanent H3 regression suite. Treat any non-zero result as a build failure:
-
-```text
-python scripts/h3_prompt_lint.py <html-file>
-python scripts/h3_unit_lint.py <html-file>
-python scripts/h3_regression_tests.py
-python scripts/h3_upload_order_lint.py <html-file>
-```
-
-13a. Check the per-unit upload checklist from `templates/H3_PRODUCTION_LAYOUT.md`: it is expanded, occurs before the unit's prompts, has contiguous modality-local numbering, exact clickable filenames with inline micro-thumbnails and instant hover zoom cards, meaningful roles, and audio targets/purposes when present. Compare its ordering with the actual input map and both prompt versions. Open the local links, copy both prompts, and check narrow-screen layout. After editing upload-order tooling, run `python scripts/h3_upload_order_tests.py`; these checks use local fixtures and must not generate media. This requirement applies to new or revised deliverables; do not retroactively rewrite a completed film when the task is only skill maintenance.
-
-13b. Assemble the 5 industrial visual presentation modules from `templates/HTML_TEMPLATE.md` and `templates/H3_PRODUCTION_LAYOUT.md`:
-  - **Module 1: Visual Asset Hub & Dual-Track Gallery (`{ASSET_HUB_SECTION}`)**: Render top-level character/scene asset cards equipped with 1-click copy buttons and native toggles between portrait looks and 4-view production turnaround sheets.
-  - **Module 2: Prop State Progression Chain (`{PROP_STATE_TRACKER_BLOCK}`)**: Render timeline-ordered physical prop degradation/change nodes across scene events.
-  - **Module 3: Cinematic Shot Badges (`{CINEMATIC_SHOT_BADGES}`)**: Render colored micro-crystal pill badges (focal length, shot size, camera move, lighting atmosphere, micro-acting) in each unit card.
-  - **Module 4: Zero-Dependency Dual-Prompt Tab Container**: Wrap Tab 1 中文版 (Chinese six-section prompt) and Tab 2 英文版 (English six-section prompt) inside responsive tabs (`.prompt-tabs-container`) with native JS switching and toast copy feedback. Both tabs carry a generation copy control. There is no third tab.
-  - **Module 5: 14-Point Anti-Glitch QA & Emergency Fix Spells (`{QA_CHECKLIST_AND_FIXES_CARD}`)**: Render the full 14-point audit checklist and the 5 high-frequency rescue spell copy panels.
-
-14. Perform a per-shot action-density pass on the submitted `镜头设计`: locate the first frame where each shot's stated action or information lands. If the remaining duration is not an explicitly directed reaction, listening/decision process, environmental development, or final stable handle, repack the shot. Reject shots that park a character in a completed pose simply to fill a nominal duration.
-15. Perform a scene-rhythm pass: verify every key action has an onset, change, and result; every reaction names its trigger and visible consequence; high-information dialogue is not competing with unrelated complex action; camera movement and shot-size changes have an information-bearing destination; and every cut is an action, eyeline, sound, or emotional handoff. Review each three-to-five-shot run for unmotivated sameness of scale, motion, or emotional temperature.
-16. Perform a vocal-placement pass: every audible line has an explicit start/end window inside its owning shot, a visible or off-screen source valid for that window, a pre-line action/breath, and a separately timed reaction or tail. Reject any prompt where dialogue could plausibly be delayed to the end of a broad shot because its internal placement is unspecified.
-17. Perform a self-containment pass: reject relative continuity wording in the copyable prompt, and verify that the unit states its own opening geometry rather than relying on another unit.
-18. Perform the dual-prompt parity pass from `MINIMAX_H3_DUAL_PROMPT_CONTRACT.md`: compare shot count and cut times, reference roles, speaker mapping, exact dialogue payloads, action/prop states, soundscape, score decision, and exit state. Any mismatch blocks delivery.
+A passing lint proves structure, not quality: a unit can pass every script and still carry a flat performance, an unclosed prop chain, or a duplicated source beat. The gate covers authority separation and source-beat closure; per-unit integrity and timing; the shot ladder and boundary ledgers; truth isolation, voice stability and emotional-rhythm evidence; style-reference consistency; prompt serialization in both languages; HTML delivery integrity; and the operator-facing checks.
 
 ## File map
 
@@ -387,6 +264,8 @@ python scripts/h3_upload_order_lint.py <html-file>
 - `reference/MINIMAX_H3_EMOTION_PERFORMANCE.md` and `reference/MINIMAX_H3_ACTOR_DIALOGUE_CRAFT.md` — vocal acting and anti-recital direction.
 - `reference/SCENE_ACTING_CRAFT.md` — listener track, cue pickup, action verbs, status flips, pause placement, genre register, and mis-performance bans for dialogue units.
 - `reference/ACTING_QUICK_REFERENCE.md` — A1–A6 lookup layer: 26 vocal tags, 28 single-point micro-expression phrases, 8 modifiers, plus the four-question line test and the five input-conflict checks.
+- `reference/H3_UNIT_DIRECTING_RULES.md` — directing rules for both serializations: opening, timing, cuts, reactions.
+- `reference/FINAL_QUALITY_GATE.md` — delivery gate for what linters cannot prove: source closure, prop chains, rhythm, style.
 - `reference/MINIMAX_H3_MICRO_EXPRESSION.md` — conditional mask-versus-leak acting scores, observable face/breath/posture/prop chains, timing density, polarity protection, and restrained-performance guardrails.
 - `reference/MINIMAX_H3_ROUTING.md` — input-role routing and canonical mode checks.
 - `reference/MINIMAX_H3_PLATFORM_LIMITS.md` — per-mode reference caps and duration/modality conditions for Ref2VA.

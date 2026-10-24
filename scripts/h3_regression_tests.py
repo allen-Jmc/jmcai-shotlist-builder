@@ -12,6 +12,8 @@ import tempfile
 SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 PROMPT_LINT = SCRIPT_DIR / "h3_prompt_lint.py"
 UNIT_LINT = SCRIPT_DIR / "h3_unit_lint.py"
+UPLOAD_LINT = SCRIPT_DIR / "h3_upload_order_lint.py"
+SAMPLE_DIR = SCRIPT_DIR.parent / "evals" / "sample_h3_unit"
 
 
 def storyboard_prompt(
@@ -314,6 +316,19 @@ def main() -> int:
 
     bad_runtime = run(UNIT_LINT, html_document(zh=storyboard_prompt(), en=six_section_prompt(), displayed_runtime=405))
     require(bad_runtime.returncode != 0 and "405s != summed unit duration 12s" in bad_runtime.stdout, bad_runtime.stdout)
+
+    # End-to-end sample: one complete H3 unit that must satisfy all three linters at
+    # once. Run it from its real directory so the relative asset link resolves.
+    sample = SAMPLE_DIR / "sample_h3_unit.html"
+    require(sample.is_file(), f"missing end-to-end sample: {sample}")
+    for script in (PROMPT_LINT, UNIT_LINT, UPLOAD_LINT):
+        result = subprocess.run(
+            [sys.executable, str(script), str(sample)], text=True, capture_output=True, check=False
+        )
+        require(
+            result.returncode == 0,
+            f"end-to-end sample failed {script.name}:\n{result.stdout}{result.stderr}",
+        )
 
     print("PASS: H3 dual-prompt regression tests enforce external filename maps plus paired Chinese/English <Audio N> bindings, event citations, filename isolation, compatible audio modes, timing/dialogue parity, speaker binding, and runtime truth")
     return 0

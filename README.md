@@ -1,6 +1,6 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)
+![Version](https://img.shields.io/badge/version-3.2.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
@@ -228,9 +228,9 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 
 ---
 
-## 十一、 32 篇参考规约深度导航与架构索引
+## 十一、 34 篇参考规约深度导航与架构索引
 
-系统将专业视听工业规范梳理为 `reference/` 目录下的 32 篇深度规约：
+系统将专业视听工业规范梳理为 `reference/` 目录下的 34 篇深度规约：
 
 | 领域分类 | 规约文件名 | 核心内容简介 |
 | :--- | :--- | :--- |
@@ -251,6 +251,8 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 | | `MINIMAX_H3_ACTOR_DIALOGUE_CRAFT.md` | 演员对白与口型时序工艺（防吞字与抢画） |
 | | `SCENE_ACTING_CRAFT.md` | 文戏场景表演编排（听者反应 / 接话节奏四型 / 行动动词 / 地位翻转 / 停顿分类 / 类型语法 / 误演禁令） |
 | | `ACTING_QUICK_REFERENCE.md` | 演员速查层 A1–A6（26 声音标签 / 28 微表情短语 / 8 修饰词 / 每句四问 / 五条输入冲突检查） |
+| | `H3_UNIT_DIRECTING_RULES.md` | 中英双版共用的导演规则（开场几何 / 时间链 / 切点触发 / 反应路线 / 镜头到位条件 / 动作交接） |
+| | `FINAL_QUALITY_GATE.md` | 交付终审闸门（lint 证不了的部分：源节拍闭合 / 道具链 / 真值隔离 / 节奏证据 / 风格一致性） |
 | | `MINIMAX_H3_MICRO_EXPRESSION.md` | 演员微表情泄漏律与微表演谱（假面与极性锁定） |
 | | `MINIMAX_H3_TIMING_ENGINEERING.md` | 毫秒级切点与时序工程（Shot 1/Shot N 时间戳语法） |
 | | `MINIMAX_H3_ROUTING.md` | I2VA / FL2VA / L2VA / Ref2VA 四大生成模式智能路由 |
