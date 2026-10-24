@@ -112,7 +112,31 @@ Spend the first 1–2 seconds of the unit on that residue before the new objecti
 - **Edit handles.** Every dialogue shot keeps 0.3–0.5 s of preparation before the first word and 0.5 s of reaction after the last, so an editor can find the cut.
 - **Framing versus amplitude.** A close-up carries one micro change. A medium shot can carry gaze plus body. A wide shot must work through blocking and posture — facial detail that the framing cannot resolve must not be written.
 
-## 9. Likely AI mis-performance bans
+## 9. Blocking as relationship
+
+When the user permits body acting and the framing can show it, use distance, orientation,
+eye level and existing props as subtext. Blocking that does not change the relationship is
+decoration.
+
+- **Distance.** A step closer = pressure or approach. Half a step back = defence or
+  yielding. One retreating while the other follows = pursuit. Every distance change must
+  correspond to a line or a relationship shift; no unmotivated walking.
+- **Orientation.** Facing square = direct confrontation. Turned sideways = partial
+  avoidance. Back turned = refusal or hiding the face — when the back is turned, move the
+  performance into voice, nape and shoulders.
+- **Eye level.** One standing and one seated, one looking down and one looking up, carries
+  status without a word.
+- **Prop business.** A held object is an outlet for subtext: tighten the grip, set it down,
+  push it away, offer it and withdraw it. Use only props the user described or the reference
+  images actually contain.
+- **Framing limit.** A chest-up close shot cannot show footwork or hand props. If the beat
+  needs blocking, the framing must accommodate it; otherwise express it through shoulder
+  line, breath and gaze. Never change the user's shot size to fit the blocking.
+
+Blocking is a relationship statement, not choreography. If a move does not change who holds
+power, who is closer, or who is hiding, cut it.
+
+## 10. Likely AI mis-performance bans
 
 Select the 2–4 that this beat would most plausibly produce, and exclude them beside the affected line. Never paste the whole list.
 
@@ -128,7 +152,7 @@ Select the 2–4 that this beat would most plausibly produce, and exclude them b
 - hair and clothing drifting with no wind;
 - the body freezing completely while speaking, or hands fidgeting nonstop.
 
-## 10. Pre-delivery scene-acting audit
+## 11. Pre-delivery scene-acting audit
 
 - [ ] Every line has a speaker, an action verb, a listener reaction, and a pickup type.
 - [ ] Every emotional or tactical turn has a trigger and a visible moment of realization.
