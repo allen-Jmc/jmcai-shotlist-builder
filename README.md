@@ -1,6 +1,6 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-![Version](https://img.shields.io/badge/version-3.4.1-blue.svg)
+![Version](https://img.shields.io/badge/version-3.4.2-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
