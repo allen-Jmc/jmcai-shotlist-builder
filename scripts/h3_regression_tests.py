@@ -187,7 +187,7 @@ def main() -> int:
     )
     valid_tri_result = run(PROMPT_LINT, valid_tri_modal)
     require(valid_tri_result.returncode == 0, valid_tri_result.stdout + valid_tri_result.stderr)
-    require("tri-modal" in valid_tri_result.stdout, f"expected tri-modal PASS message, got {valid_tri_result.stdout}")
+    require("dual-prompt" in valid_tri_result.stdout, f"expected dual-prompt PASS message, got {valid_tri_result.stdout}")
 
     bad_tri_dialogue = run(
         PROMPT_LINT,

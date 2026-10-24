@@ -1,6 +1,6 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-![Version](https://img.shields.io/badge/version-2.1.4-blue.svg)
+![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
@@ -31,7 +31,7 @@ graph TD
 | 核心维度 | MiniMax H3 (海螺视频) | ByteDance Seedance 2.0 / 2.5 |
 | :--- | :--- | :--- |
 | **黄金单段时长** | **10–15 秒**（严格上限 15.0s） | **原生 30 秒**（长运镜时空连续性） |
-| **核心提示词形态** | **三模态工整对仗**（分镜版/中文执行版/英文执行版） | **多层运镜情绪语法**（带标定符号） |
+| **核心提示词形态** | **中英双版工整对仗**（中文版 / 英文版；另有中文分镜视图供人工审阅，非生成用） | **多层运镜情绪语法**（带标定符号） |
 | **专有语法标记** | `<Subject N>`, `<Picture N>`, `<Audio N>`, `<d>...</d>` | `( )` 权重、`< >` 运镜、`{ }` 动作、`【 】` 状态 |
 | **声画同步契约** | `<Audio N>` 槽位绑定 + 纯中文台词口型逐字闭环 | 画面节奏与背景音乐微节拍联动 |
 | **参考资产上限** | **9 张图片 + 3 部视频 + 3 轨音频** | 50-Slot 资产与动作锚定槽位 |
@@ -182,7 +182,7 @@ graph TD
 1. **双轨资产画廊**：主角卡片原生搭载 `[ 立绘定妆 | 角色四视图 ]` 切换条，秒级比对；
 2. **关键道具演进时间链**：时间线清晰展示道具物理破损节点；
 3. **视听彩色胶囊徽章条**：5 枚微晶高光徽章（焦段/景别/运镜/光影/微表情）；
-4. **三模态工整对仗选项卡**：导演分镜版 / 中文执行版 / 英文执行版无刷新平滑切换，带一键复制高光反馈；
+4. **中英双版提示词选项卡**：中文分镜视图（仅供审阅，不可直接生成）/ 中文版 / 英文版无刷新平滑切换，后两版带一键复制高光反馈；
 5. **14 项防穿帮终素质检单与急救卡**：全套急救方案直接内嵌于工单底部，随时查阅。
 
 > **另附版式层强制要求**：每个单元的**上传清单内联微缩图**（44px 列表缩略图 + 260px 高清浮动大图，带暗黑自愈占位）由 `templates/H3_PRODUCTION_LAYOUT.md` 约束，属于不可裁剪的版式规范，不单独计为视觉模块。
@@ -197,7 +197,7 @@ graph TD
 | **Phase 1** | `SCRIPT_GROUNDING` | 剧本全文解析与时空锚定 | 提取场次、角色、道具演进、情感弧光与总时长（内部推演，不停顿）。 |
 | **Phase 2** | `REQUEST_ASSETS` | 资产清单与声线意图解析 | **强停顿**：列出人设/四视图/道具清单，确认 `AUDIO_REFERENCE_INTENT`，**停顿等用户提供/确认**。 |
 | **Phase 3** | `LOCK_BLUEPRINT` | 空间调度与蓝图校准 | **强停顿**：<br>1. 多人同框提供俯视走位图 (SVG) 等批准；<br>2. 多单元项目**仅先输出第 1 单元作为校准预览**，停顿等批准后再全量扩展。 |
-| **Phase 4** | `DIRECT_AND_COMPILE`| 分镜编制与 HTML 编译 | 组装双轨画廊、徽章、内联微缩图、三模态 Tab，执行三大 Linter 校验闭环交付。 |
+| **Phase 4** | `DIRECT_AND_COMPILE`| 分镜编制与 HTML 编译 | 组装双轨画廊、徽章、内联微缩图、中英双版 Tab，执行三大 Linter 校验闭环交付。 |
 
 ---
 
@@ -281,5 +281,5 @@ git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git
 
 * **剧本全流程拆解**：*“我上传了一份短片剧本，请帮我拆解并制作完整的电影级分镜工单。”*
 * **ByteDance Seedance 提示词**：*“请使用 Seedance 2.5 规约，生成带 30 秒长运镜标定符号的视频提示词。”*
-* **MiniMax H3 生产工单**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与三模态 Tab 的 HTML 生产工单。”*
+* **MiniMax H3 生产工单**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与中英双版 Tab 的 HTML 生产工单。”*
 

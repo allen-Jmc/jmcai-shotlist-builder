@@ -30,7 +30,7 @@ SHOT_TIME_RE = re.compile(
     r"【镜头\s*(?P<number>\d+)\s*｜\s*(?P<start>\d+(?:\.\d+)?)—"
     r"(?P<end>\d+(?:\.\d+)?)秒】"
 )
-CHINESE_TITLE_RE = re.compile(r"^中文(?:审稿|分镜)版｜H3-[\w-]+｜\d+(?:\.\d+)?秒\s*$", re.MULTILINE)
+CHINESE_TITLE_RE = re.compile(r"^中文(?:审稿版|分镜版|分镜视图)｜H3-[\w-]+｜\d+(?:\.\d+)?秒\s*$", re.MULTILINE)
 ZH_MACHINE_START_RE = re.compile(r"^主体定义：\s*$", re.MULTILINE)
 ENGLISH_SIX_SECTION_RE = re.compile(r"^subject_definitions:\s*$", re.MULTILINE | re.IGNORECASE)
 PACKED_RUNTIME_RE = re.compile(

@@ -1,7 +1,7 @@
 ---
 name: jmcai-shotlist-builder
 description: |
-  JMCAI 电影级工业视听分镜与多模态工单构建系统（正式版）。用于文学剧本拆解、分镜蓝图规划、核心视听资产台账建立、工整三模态提示词编制（中文分镜版/中文执行版/英文执行版）及离线自包含 HTML 生产工单构建。
+  JMCAI 电影级工业视听分镜与多模态工单构建系统（正式版）。用于文学剧本拆解、分镜蓝图规划、核心视听资产台账建立、工整中英双版提示词编制（中文版/英文版）及离线自包含 HTML 生产工单构建。
   原生支持 MiniMax H3（海螺视频 10–15 秒连续长片段、双轨资产联动、音频/口型强绑定、六段式契约）与 ByteDance Seedance 2.0/2.5。
   提供双轨资产画廊（神颜立绘/生产四视图）、关键道具物理演进链、5 枚视听彩色胶囊徽章、单元内联微缩图与 14 项防穿帮质检单，内置三大官方 Linter 自动化质检保障。
   当用户提出“分镜制作”、“剧本拆解”、“生成视频提示词”、“H3 工单制作”、“制作分镜工单”或上传文学短片剧本时触发。
@@ -11,7 +11,7 @@ description: |
 
 本系统是面向 AI 电影与影视级短剧的工业级视听分镜与提示词工程套件。将文学剧本深度转化为可执行的专业导演视听决策：戏剧单元切分、空间走位调度、有动机的焦段景别运镜、演员微反应刻画、台词与口型强绑定、物理动作链以及平滑的镜头切点交接。
 
-系统最终交付零外部 CDN 依赖、100% 离线自包含的现代化生产工单 HTML，完全基于 [templates/HTML_TEMPLATE.md](templates/HTML_TEMPLATE.md) 与 [templates/H3_PRODUCTION_LAYOUT.md](templates/H3_PRODUCTION_LAYOUT.md) 规约，整合核心资产台账、道具物理状态演进链、视听胶囊徽章条、上传清单内联微缩图、三模态无刷新选项卡与 14 项终素质检单。
+系统最终交付零外部 CDN 依赖、100% 离线自包含的现代化生产工单 HTML，完全基于 [templates/HTML_TEMPLATE.md](templates/HTML_TEMPLATE.md) 与 [templates/H3_PRODUCTION_LAYOUT.md](templates/H3_PRODUCTION_LAYOUT.md) 规约，整合核心资产台账、道具物理状态演进链、视听胶囊徽章条、上传清单内联微缩图、中英双版提示词选项卡与中文分镜视图、14 项终素质检单。
 
 Every independently generated unit must tell the operator exactly which references to upload and in what order. Show actual numbered image filenames, named character/environment/style roles, and working file links; show video and audio upload orders separately when active. An asset gallery, a global reference list, prose such as “same references,” or filenames hidden inside JSON cannot substitute for the per-unit visible checklist. Image order and prompt reference meanings must come from the same unit input map. A unit reusing a global style image must list it again in its actual position. For audio, preserve the approved filename-to-character binding and state each local slot, duration, and timbre-reference/reuse purpose. See the layout reference for markup and validation; do not put filenames or operator instructions into copyable H3 prompt prose.
 
@@ -199,7 +199,7 @@ Read [MINIMAX_H3_LONG_SCRIPT_UNITS.md](reference/MINIMAX_H3_LONG_SCRIPT_UNITS.md
 - for any face-readable shot whose meaning depends on concealed, contradictory, delayed, or restrained emotion: [MINIMAX_H3_MICRO_EXPRESSION.md](reference/MINIMAX_H3_MICRO_EXPRESSION.md); use it as an internal acting layer, never as a separate H3 prompt or mode router;
 - always: [MINIMAX_H3_BASE_EN.md](reference/MINIMAX_H3_BASE_EN.md). Use it as internal H3 timing, keyframe, camera, dialogue, and sound guidance; it is not the user-facing Chinese prompt shell.
 - always: [MINIMAX_H3_DUAL_PROMPT_CONTRACT.md](reference/MINIMAX_H3_DUAL_PROMPT_CONTRACT.md) and [MINIMAX_H3_FULL_REFERENCE_EN.md](reference/MINIMAX_H3_FULL_REFERENCE_EN.md). Every H3 unit keeps the Chinese director storyboard and adds a separately copyable English six-section companion compiled from the same unit truth.
-- for direct domestic Chinese AI video generation with full subject slot and retention control: apply [MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md](reference/MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md). When tri-modal output is requested or enabled, emit the Chinese Execution Six-Section prompt (中文执行版) alongside the Chinese Director Storyboard (中文分镜版) and English six-section companion (英文执行版), forming an industrial tri-modal dual-execution architecture.
+- for the Chinese half of the pair: apply [MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md](reference/MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md). Every unit ships exactly **two** copyable prompts — the Chinese six-section prompt and the English six-section companion — compiled from one unit truth. The Chinese storyboard is a review-only view for human reading: it is never a third prompt mode, and it must not be pasted into a model because it carries no subject binding or retention policy.
 - for shot-level physical micro-actions, environmental pressures, and cinematic lighting/moves: apply [DRAMATURGY_MONTAGE_LAW.md](reference/DRAMATURGY_MONTAGE_LAW.md) and [CAMERA_LIGHTING_VOCABULARY.md](reference/CAMERA_LIGHTING_VOCABULARY.md). Embed their three-detail rule, Walter Murch Rule of Six, and Hollywood lighting lexicon inside Chinese `镜头设计` and English `detailed_description` without altering the outer prompt schema.
 - for pre-delivery continuity verification and failure-mode fixes: apply [VIDEO_CONTINUITY_FIXES_CHECKLIST.md](reference/VIDEO_CONTINUITY_FIXES_CHECKLIST.md) to audit character consistency, prop state progression, and hard-cut stability.
 - conditionally, when `AUDIO_REFERENCE_MAP` is active: [MINIMAX_H3_AUDIO_REFERENCE_BINDING.md](reference/MINIMAX_H3_AUDIO_REFERENCE_BINDING.md). It controls operator-side filename confirmation, upload-slot assignment, reuse/reference routing, and English six-section binding. When inactive, emit none of its optional audio syntax.
@@ -209,7 +209,7 @@ Read [MINIMAX_H3_LONG_SCRIPT_UNITS.md](reference/MINIMAX_H3_LONG_SCRIPT_UNITS.md
 For Chinese users and third-party H3 callers, every unit contains a natural Chinese director storyboard. It uses this exact user-facing shape:
 
 ```text
-中文审稿版｜H3-XXX｜N秒
+中文分镜视图｜H3-XXX｜N秒
 
 角色与场景：
 ...active character identity, wardrobe, props, environment, lighting, and weather...
@@ -317,7 +317,7 @@ Assemble the selected branch with [templates/HTML_TEMPLATE.md](templates/HTML_TE
 
 The template's `{PLAN_CODE}`, `{PLAN_LABEL}`, `{PLAN_OPTIONS}`, and `{N_PLANS}` slots are driven by [PLAN_TYPES.md](reference/PLAN_TYPES.md); read it before filling them rather than inventing abbreviations. The `planFilter` toolbar control must list exactly the plan codes actually used in the deliverable.
 
-For H3, include one Chinese Director Storyboard copy control and one English six-section copy control per unit (plus conditionally one Machine-Aligned Chinese Six-Section copy control when tri-modal output is enabled). Include the unit blueprint summary, `VOICE_BIBLE`, `POST_NODES`, runtime totals, scene shot ladder, pairwise boundary ledgers, and per-unit planning metadata.
+For H3, include exactly one Chinese six-section copy control and one English six-section copy control per unit — that pair is the deliverable. The Chinese storyboard appears as a review-only view: no copy control, or a copy control explicitly labelled as not for generation. Include the unit blueprint summary, `VOICE_BIBLE`, `POST_NODES`, runtime totals, scene shot ladder, pairwise boundary ledgers, and per-unit planning metadata.
 
 
 When the user requests revisions after delivery, edit and re-present the HTML rather than dumping replacement prompt text into chat.
@@ -360,7 +360,7 @@ Before H3 delivery:
 4. Confirm prompt nouns and soundscapes pass per-unit truth isolation; voice profiles remain stable and performance is playable rather than generic. Audit each `EMOTIONAL_RHYTHM_MAP`: opening pressure, exact trigger, one turn, visual motif, sonic pulse, tempo curve, and afterimage must all have observable evidence in final shot prose.
 5. When a submitted style reference is declared global, audit every unit's reference list: the same style file must be present everywhere, no unit may exceed the platform reference cap, and any displaced reference must be a non-critical environment/secondary input with its scene truth still written explicitly.
 5a. When `AUDIO_REFERENCE_MAP` is active, audit the operator checklist's exact filename spelling, real upload order, one-to-one character/source locks, unique audio labels, compatible mode/retention markers, and copied/referenced scope. Confirm both prompts use the checklist's slot labels at the correct vocal events; confirm the Chinese `角色与场景：` contains one filename-free compact binding line per active label and no source filename. When inactive, confirm neither prompt contains `<Audio N>`, `Audio mode`, `Retention`, `audio reuse`, or `audio reference` routing language.
-6. Confirm the exact Chinese director-storyboard order: `中文审稿版｜H3-XXX｜N秒` → `角色与场景：` → `镜头设计：` → continuous `【镜头N｜起止秒数】` entries → `声音：` → `音乐：`. Confirm shot time ranges increase without gaps or overlap, and one copyable Chinese prompt exists for the unit. Confirm the same unit also has one copyable English prompt with the six fields in canonical order. When score is used, confirm its texture, pulse, entry, and exit are concrete and do not duplicate diegetic sound.
+6. Confirm the exact Chinese director-storyboard order: `中文分镜视图｜H3-XXX｜N秒` → `角色与场景：` → `镜头设计：` → continuous `【镜头N｜起止秒数】` entries → `声音：` → `音乐：`. Confirm shot time ranges increase without gaps or overlap, and one copyable Chinese prompt exists for the unit. Confirm the same unit also has one copyable English prompt with the six fields in canonical order. When score is used, confirm its texture, pulse, entry, and exit are concrete and do not duplicate diegetic sound.
 7. Confirm every spoken line remains verbatim on the line immediately following its delivery colon. Confirm the voice baseline and line delivery appear before it, and that no tag, bracketed instruction, quotation wrapper, or long acting note follows the dialogue in the same beat.
 8. Search the submission prompt for authoring-template leakage and option language. Reject phrases that defer the actual shot choice, refer to a “next source fact,” use generic event placeholders, or instruct the writer/model to choose among several framings.
 9. Confirm every audible speaker repeats a complete, self-contained voice baseline within that unit and that no dialogue direction says to match H3-001, the previous unit, or any unseen clip. A real audio reference may reinforce the match, but it does not remove this textual requirement.
@@ -382,7 +382,7 @@ python scripts/h3_upload_order_lint.py <html-file>
   - **Module 1: Visual Asset Hub & Dual-Track Gallery (`{ASSET_HUB_SECTION}`)**: Render top-level character/scene asset cards equipped with 1-click copy buttons and native toggles between portrait looks and 4-view production turnaround sheets.
   - **Module 2: Prop State Progression Chain (`{PROP_STATE_TRACKER_BLOCK}`)**: Render timeline-ordered physical prop degradation/change nodes across scene events.
   - **Module 3: Cinematic Shot Badges (`{CINEMATIC_SHOT_BADGES}`)**: Render colored micro-crystal pill badges (focal length, shot size, camera move, lighting atmosphere, micro-acting) in each unit card.
-  - **Module 4: Zero-Dependency Tri-Modal Multi-Tab Container**: Wrap Tab 1 中文分镜版 (Storyboarding), Tab 2 中文执行版 (Domestic AI generation execution), and Tab 3 英文执行版 (Official/international execution) inside responsive tabs (`.prompt-tabs-container`) with native JS switching and toast copy feedback.
+  - **Module 4: Zero-Dependency Dual-Prompt Tab Container**: Wrap Tab 1 中文分镜视图 (review-only, not for generation), Tab 2 中文版 (Chinese six-section prompt), and Tab 3 英文版 (English six-section prompt) inside responsive tabs (`.prompt-tabs-container`) with native JS switching and toast copy feedback. Only Tab 2 and Tab 3 carry generation copy controls.
   - **Module 5: 14-Point Anti-Glitch QA & Emergency Fix Spells (`{QA_CHECKLIST_AND_FIXES_CARD}`)**: Render the full 14-point audit checklist and the 5 high-frequency rescue spell copy panels.
 
 14. Perform a per-shot action-density pass on the submitted `镜头设计`: locate the first frame where each shot's stated action or information lands. If the remaining duration is not an explicitly directed reaction, listening/decision process, environmental development, or final stable handle, repack the shot. Reject shots that park a character in a completed pose simply to fill a nominal duration.

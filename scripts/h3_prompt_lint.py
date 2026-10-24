@@ -15,7 +15,7 @@ CONTAINER = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 ATTRIBUTE = re.compile(r"([\w-]+)\s*=\s*(['\"])(.*?)\2", re.DOTALL)
-TITLE = re.compile(r"^中文(?:审稿|分镜)版｜H3-[\w-]+｜\d+(?:\.\d+)?秒\s*$", re.MULTILINE)
+TITLE = re.compile(r"^中文(?:审稿版|分镜版|分镜视图)｜H3-[\w-]+｜\d+(?:\.\d+)?秒\s*$", re.MULTILINE)
 ZH_SHOT = re.compile(
     r"^【镜头\s*(?P<number>\d+)\s*｜\s*"
     r"(?P<start>\d+(?:\.\d+)?)—(?P<end>\d+(?:\.\d+)?)秒】",
@@ -182,7 +182,7 @@ def lint_boundaries(source: str, unit_count: int) -> list[str]:
 def lint_chinese(prompt: str, index: int) -> tuple[list[str], list[re.Match[str]]]:
     errors: list[str] = []
     if TITLE.search(prompt) is None:
-        errors.append("missing title in the form ‘中文分镜版（或审稿版）｜H3-XXX｜N秒’")
+        errors.append("missing title in the form ‘中文分镜视图｜H3-XXX｜N秒’")
     sections = ["角色与场景：", "镜头设计：", "声音：", "音乐："]
     offsets = [prompt.find(label) for label in sections]
     if any(offset < 0 for offset in offsets) or offsets != sorted(offsets):
@@ -486,8 +486,8 @@ def main() -> int:
         errors.append("HTML: no Chinese director-storyboard prompt blocks found")
     if len(chinese) != len(english):
         errors.append(f"HTML: expected one English companion per Chinese block, found {len(chinese)} Chinese and {len(english)} English")
-    has_tri_modal = len(chinese_machine) > 0
-    if has_tri_modal:
+    has_chinese_prompt = len(chinese_machine) > 0
+    if has_chinese_prompt:
         if len(chinese_machine) != len(chinese):
             errors.append(f"HTML: expected {len(chinese)} Chinese machine prompts, found {len(chinese_machine)}")
         expected_total = len(chinese) + len(chinese_machine) + len(english)
@@ -501,7 +501,7 @@ def main() -> int:
         block_errors, shots = lint_chinese(prompt, i)
         errors.extend(block_errors)
         zh_results.append(shots)
-    if has_tri_modal:
+    if has_chinese_prompt:
         for i, prompt in enumerate(chinese_machine, 1):
             block_errors, _shots = lint_chinese_machine(prompt, i)
             errors.extend(block_errors)
@@ -511,7 +511,7 @@ def main() -> int:
         en_results.append(shots)
     for i, (zh, en, zh_shots, en_shots) in enumerate(zip(chinese, english, zh_results, en_results), 1):
         errors.extend(lint_pair(zh, en, i, zh_shots, en_shots))
-    if has_tri_modal:
+    if has_chinese_prompt:
         for i, (zh_m, en) in enumerate(zip(chinese_machine, english), 1):
             zh_m_lines, en_lines = clean_en_dialogue(zh_m), clean_en_dialogue(en)
             if zh_m_lines != en_lines:
@@ -522,7 +522,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
-    mode_text = "tri-modal (storyboard + Chinese execution + English execution)" if has_tri_modal else "paired H3 Chinese storyboard + English six-section"
+    mode_text = "dual-prompt (Chinese six-section + English six-section, with review-only storyboard view)" if has_chinese_prompt else "dual-prompt (Chinese storyboard + English six-section)"
     print(f"PASS: {len(chinese)} {mode_text} prompt(s) satisfy structural and parity lint checks")
     return 0
 

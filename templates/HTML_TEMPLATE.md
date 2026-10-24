@@ -196,40 +196,40 @@ For MiniMax H3, replace the single block above with this paired Chinese director
 
   {UNIT_UPLOAD_ORDER_CHECKLIST}
 
-  <!-- 提示词多 Tab 工业容器 (零外部依赖，纯原生无刷新切换) -->
+  <!-- 中英双版提示词容器 (零外部依赖，纯原生无刷新切换)。交付物是后两个 Tab；第一个是审阅视图，不提供复制。 -->
   <div class="prompt-tabs-container">
     <div class="prompt-tabs-nav">
-      <button type="button" class="tab-btn active" data-tab="zh" onclick="switchPromptTab(this, 'zh')">中文分镜版</button>
-      <button type="button" class="tab-btn" data-tab="zh-exec" onclick="switchPromptTab(this, 'zh-exec')">中文执行版</button>
-      <button type="button" class="tab-btn" data-tab="en" onclick="switchPromptTab(this, 'en')">英文执行版</button>
+      <button type="button" class="tab-btn active" data-tab="zh" onclick="switchPromptTab(this, 'zh')">中文分镜视图</button>
+      <button type="button" class="tab-btn" data-tab="zh-exec" onclick="switchPromptTab(this, 'zh-exec')">中文版</button>
+      <button type="button" class="tab-btn" data-tab="en" onclick="switchPromptTab(this, 'en')">英文版</button>
     </div>
 
-    <!-- 中文分镜版 (导演/制片/客户快速审阅分镜) -->
+    <!-- 中文分镜视图 (导演/制片/客户审阅用；纯中文自然语言，不可直接粘贴给模型) -->
     <div class="prompt-tab-pane tab-pane-zh active">
       <div class="prompt-pane-header">
-        <b style="color:#d1a461;">中文分镜版｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
+        <b style="color:#d1a461;">中文分镜视图｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
         <span style="color:#8892b0; font-size:11px;">[{TAG}]</span>
-        <button type="button" class="copy-btn" onclick="copyPromptText(this)">复制分镜设计</button>
+        <span style="color:#f0a35e; font-size:11px;">仅供审阅，不可直接用于生成</span>
       </div>
       <div class="prompt-block prompt-zh">{H3_PROMPT_ZH_STORYBOARD}</div>
     </div>
 
-    <!-- 中文执行版 (对齐英文六段结构的国内模型直投生成版) -->
+    <!-- 中文版 (交付物之一：中文六段式，国内模型直投生成用) -->
     <div class="prompt-tab-pane tab-pane-zh-exec tab-pane-zh-machine" style="display:none;">
       <div class="prompt-pane-header">
-        <b style="color:#34d399;">中文执行版 (六段式指令)｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
+        <b style="color:#34d399;">中文版 (Chinese Six-Section)｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
         <span style="color:#8892b0; font-size:11px;">[{TAG}]</span>
-        <button type="button" class="copy-btn" onclick="copyPromptText(this)">复制中文执行词</button>
+        <button type="button" class="copy-btn" onclick="copyPromptText(this)">复制中文版</button>
       </div>
       <div class="prompt-block prompt-zh-exec prompt-zh-machine">{H3_PROMPT_ZH_MACHINE}</div>
     </div>
 
-    <!-- 英文执行版 (标准官方英文六段式生产执行提示词) -->
+    <!-- 英文版 (交付物之二：官方英文六段式) -->
     <div class="prompt-tab-pane tab-pane-en" style="display:none;">
       <div class="prompt-pane-header">
-        <b style="color:#60a5fa;">英文执行版 (English Six-Section)｜{UNIT_ID}｜{DURATION_SECONDS}s</b>
+        <b style="color:#60a5fa;">英文版 (English Six-Section)｜{UNIT_ID}｜{DURATION_SECONDS}s</b>
         <span style="color:#8892b0; font-size:11px;">[{TAG}]</span>
-        <button type="button" class="copy-btn" onclick="copyPromptText(this)">复制英文执行词</button>
+        <button type="button" class="copy-btn" onclick="copyPromptText(this)">复制英文版</button>
       </div>
       <div class="prompt-block h3-prompt-en">{H3_PROMPT_EN_SIX_SECTION}</div>
     </div>
@@ -248,10 +248,10 @@ Fill every platform placeholder consistently; never mix values across rows.
 | `{PROMPT_TITLE}` | `Seedance 2.0 提示词` | `MiniMax H3 prompts` |
 | `{PROMPT_LANGUAGE_SUMMARY}` | `with detailed Chinese cinematic prompts` | `with paired Chinese and English H3 prompts` |
 | `{PROMPT_COLUMN_LABEL}` | `Seedance 2.0 提示词` | `MiniMax H3 中英双提示词` |
-| `{PROMPT_BLOCK_LABEL}` | `提示词` | `中文审稿版` |
+| `{PROMPT_BLOCK_LABEL}` | `提示词` | `中文分镜视图` |
 | `{VIDEO_PROMPT}` | The complete Chinese Seedance prompt | Replaced by `{H3_PROMPT_ZH_STORYBOARD}` |
 | `{H3_PROMPT_ZH_STORYBOARD}` | N/A | One copyable Chinese prompt with title, `角色与场景：`, timed `镜头设计：`, `声音：`, and `音乐：` |
-| `{H3_PROMPT_ZH_MACHINE}` | N/A | One copyable Machine-Aligned Chinese prompt with `主体定义`, `任务摘要`, `保留分析`, `镜头详述`, `环境音响`, and `非剧情音乐` (tri-modal mode) |
+| `{H3_PROMPT_ZH_MACHINE}` | N/A | One copyable Chinese six-section prompt with `主体定义`, `任务摘要`, `保留分析`, `镜头详述`, `环境音响`, and `非剧情音乐`. Required for every H3 unit — it is the Chinese half of the delivered pair |
 | `{H3_PROMPT_EN_SIX_SECTION}` | N/A | One copyable English prompt with `subject_definitions`, `summary`, `retention_analysis`, `detailed_description`, `overall_soundscape`, and `non_diegetic_music` |
 | `{CINEMATIC_SHOT_BADGES}` | Empty | Shot badges bar for focal length, shot size, camera move, lighting, micro-acting |
 | `{ASSET_HUB_SECTION}` | Empty | Visual asset ledger & dual-track generation gallery with 1-click copy prompts |

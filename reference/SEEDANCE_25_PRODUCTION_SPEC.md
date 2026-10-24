@@ -1,6 +1,6 @@
 # 字节跳动 Seedance 2.5 / 2.0 官方生产规约 (ByteDance Production Spec)
 
-本规约作为 `jmcai-shotlist-builder-beta` 的字节跳动（即梦 Dreamina / 剪映小云雀）视频大模型专项指导层。Seedance 是目前业界**唯一具备单次生成输出多机位蒙太奇（Multi-shot in ONE generation）能力的顶级模型**。2.5 版本更带来了原生 30 秒长叙事与 50 槽位多模态资产支持。
+本规约作为 `jmcai-shotlist-builder` 的字节跳动（即梦 Dreamina / 剪映小云雀）视频大模型专项指导层。Seedance 是目前业界**唯一具备单次生成输出多机位蒙太奇（Multi-shot in ONE generation）能力的顶级模型**。2.5 版本更带来了原生 30 秒长叙事与 50 槽位多模态资产支持。
 
 ---
 

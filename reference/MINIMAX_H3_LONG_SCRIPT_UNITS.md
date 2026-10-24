@@ -142,7 +142,7 @@
 
 ## 9. 编译为 H3 正式提示词
 
-`H3_UNIT_BLUEPRINT` 是规划层，不替代 H3 协议。最终每个单元按 `MINIMAX_H3_ROUTING.md` 选择 I2VA、FL2VA、L2VA 或 Ref2VA，并输出一对提示词：第一份是中文导演分镜 `中文审稿版｜H3-XXX｜N秒`、`角色与场景：`、`镜头设计：`、`声音：`、`音乐：`；第二份是英文六段式 `subject_definitions`、`summary`、`retention_analysis`、`detailed_description`、`overall_soundscape`、`non_diegetic_music`。两份都从同一单元真值编译，镜头顺序、切点、台词、动作、声音与尾态完全对齐。
+`H3_UNIT_BLUEPRINT` 是规划层，不替代 H3 协议。最终每个单元按 `MINIMAX_H3_ROUTING.md` 选择 I2VA、FL2VA、L2VA 或 Ref2VA，并输出一对提示词：第一份是中文导演分镜 `中文分镜视图｜H3-XXX｜N秒`、`角色与场景：`、`镜头设计：`、`声音：`、`音乐：`；第二份是英文六段式 `subject_definitions`、`summary`、`retention_analysis`、`detailed_description`、`overall_soundscape`、`non_diegetic_music`。两份都从同一单元真值编译，镜头顺序、切点、台词、动作、声音与尾态完全对齐。
 
 从 `SOURCE_BEATS`、`PROP_STATE_CHAIN`、`VOICE_BIBLE`、条件性的 `AUDIO_REFERENCE_MAP`、`OPENING_STATE`、`SCENE_SHOT_LADDER`、`CLIP_BOUNDARY_LEDGER`、`CLIP_TRUTH_LEDGER` 和 `SHOT_SCORE` 编译，而不是从剧情摘要拼接。每个独立单元重新定义真实需要的引用和说话者，不依赖上一单元；音频标签可以按真实上传顺序重新编号，但操作映射中的精确文件名与锁定角色不得改变，文件名不得进入提示词。
 

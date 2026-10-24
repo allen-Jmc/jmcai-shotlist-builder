@@ -143,7 +143,7 @@ Before placing an H3 prompt in the HTML, verify all applicable checks:
 
 ### Chinese director storyboard (default)
 
-- The title and sections appear exactly once and in this order: `中文审稿版｜H3-XXX｜N秒`, `角色与场景：`, `镜头设计：`, `声音：`, `音乐：`.
+- The title and sections appear exactly once and in this order: `中文分镜视图｜H3-XXX｜N秒`, `角色与场景：`, `镜头设计：`, `声音：`, `音乐：`.
 - I2VA, FL2VA, or L2VA keyframe alignment is described by the opening/landing states inside the relevant shot; do not emit a separate Base-Mode preamble.
 - Shot numbers are consecutive, ranges are continuous, and the last range ends at the declared clip duration.
 - Dialogue has no `<d>` tags: its delivery ends in a colon and the verbatim line occupies the next line alone.
@@ -227,7 +227,7 @@ Before placing an H3 prompt in the HTML, verify all applicable checks:
 
 ### Chinese/English pair parity audit
 
-- Each H3 unit contains two separately labeled and independently copyable blocks in this order: `中文审稿版` first, `English six-section prompt` second.
+- Each H3 unit contains two separately labeled and independently copyable blocks in this order: `中文分镜视图` first, `English six-section prompt` second.
 - The Chinese block remains natural Chinese director prose with no H3 visual/dialogue tags; only confirmed `<Audio N>` tokens and their compact mixed-language routing block are conditionally allowed. The English block keeps the canonical six field names and H3 reference/dialogue tokens.
 - Both blocks encode the same unit truth: reference roles, audio mode/retention scope when active, shot count/order, cut times, speaker identities, exact original-language dialogue payloads, emotional turns, action/prop states, sound events, music decision, and exit state. The operator checklist separately locks each audio filename to the English `<Audio N>` upload slot and target character.
 - Any edit to one block is synchronized into the other before delivery. Resolve discrepancies by returning to the approved `CLIP_TRUTH_LEDGER` and `SHOT_SCORE`, not by silently treating either serialization as expendable.
