@@ -382,6 +382,7 @@ python scripts/h3_upload_order_lint.py <html-file>
 - `reference/MINIMAX_H3_EMOTION_PERFORMANCE.md` and `reference/MINIMAX_H3_ACTOR_DIALOGUE_CRAFT.md` — vocal acting and anti-recital direction.
 - `reference/MINIMAX_H3_MICRO_EXPRESSION.md` — conditional mask-versus-leak acting scores, observable face/breath/posture/prop chains, timing density, polarity protection, and restrained-performance guardrails.
 - `reference/MINIMAX_H3_ROUTING.md` — input-role routing and canonical mode checks.
+- `reference/MINIMAX_H3_PLATFORM_LIMITS.md` — per-mode reference caps and duration/modality conditions for Ref2VA.
 - `reference/MINIMAX_H3_BASE_EN.md` — official internal reference for H3 timeline/keyframe/camera/dialogue/sound concepts; not the Chinese director-storyboard output shell.
 - `reference/MINIMAX_H3_DUAL_PROMPT_CONTRACT.md` — mandatory pairing and parity rules for the Chinese storyboard plus English six-section companion.
 - `reference/MINIMAX_H3_FULL_REFERENCE_EN.md` — canonical English six-section Ref2VA labels, retention relationships, dialogue tags, and audio fields.
