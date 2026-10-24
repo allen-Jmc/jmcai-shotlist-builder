@@ -239,7 +239,6 @@ body {
   border-bottom: 2px solid transparent;
 }
 .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.03); }
-.tab-btn.active[data-tab="zh"] { color: var(--gold-accent); border-bottom-color: var(--gold-accent); background: rgba(230,196,147,0.08); }
 .tab-btn.active[data-tab="zh-exec"], .tab-btn.active[data-tab="zh-machine"] { color: var(--emerald-accent); border-bottom-color: var(--emerald-accent); background: rgba(52,211,153,0.08); }
 .tab-btn.active[data-tab="en"] { color: var(--blue-accent); border-bottom-color: var(--blue-accent); background: rgba(96,165,250,0.08); }
 

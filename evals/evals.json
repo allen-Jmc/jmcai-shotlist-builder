@@ -27,10 +27,10 @@
     {
       "id": 3,
       "prompt": "继续一个已完成前三阶段的任务：PROMPT_PLATFORM 已锁定为 MiniMax H3；范围为场景 1；资产映射和俯视走位均已批准。suwan.png 是苏晚的可复用人物外观参考，rain_stall.png 是纸鹤摊环境参考，suwan_voice.wav 只参考苏晚的音色与缓慢疲惫的语速，不复制原音频。生成一个 15 秒 Ref2VA HTML 分镜。镜头一：苏晚坐在桌边看着纸鹤；她的画外音是‘我本来不信。’镜头二在 00:07.000 切到她的手部近景，她没有开口，纸鹤轻轻颤动。",
-      "expected_output": "A MiniMax H3 HTML shotlist with paired Chinese director-storyboard and English six-section prompts. An operator checklist maps suwan_voice.wav to the real <Audio 1> upload slot and Su Wan, while both model-facing prompts contain no audio filename. The Chinese and English prompts both bind <Audio 1> to Su Wan's owning vocal event, use audio reference rather than reuse, and preserve the target Chinese voice-over.",
+      "expected_output": "A MiniMax H3 HTML shotlist carrying a Chinese six-section prompt and its English six-section companion. An operator checklist maps suwan_voice.wav to the real <Audio 1> upload slot and Su Wan, while both model-facing prompts contain no audio filename. The Chinese and English prompts both bind <Audio 1> to Su Wan's owning vocal event, use audio reference rather than reuse, and preserve the target Chinese voice-over.",
       "files": [],
       "expectations": [
-        "The Chinese block keeps the five-section director-storyboard structure; an operator checklist outside both prompts maps suwan_voice.wav to <Audio 1> and 苏晚, while 角色与场景 contains one filename-free <Audio 1> binding with Audio mode: audio reference, Retention: reference, scope, and exclusions.",
+        "The Chinese block keeps the six-section structure; an operator checklist outside both prompts maps suwan_voice.wav to <Audio 1> and 苏晚, while 主体定义： carries the filename-free <Audio 1> label with Audio mode: audio reference, Retention: reference, scope, and exclusions.",
         "The English companion contains the six sections once and in canonical order: subject_definitions, summary, retention_analysis, detailed_description, overall_soundscape, non_diegetic_music.",
         "The English definition maps <Audio 1> semantically to Su Wan's same stable speaker ID without naming suwan_voice.wav; the summary includes audio reference, and retention uses reference without a speaker ID.",
         "Both prompts cite <Audio 1> at Su Wan's actual vocal event; the Chinese prompt also uses natural-language voice direction. Both retain a complete written voice baseline, and both audio bindings exclude the source words and waveform.",
@@ -118,7 +118,8 @@
         "The original OS remains distinct from ordinary off-screen continuation, while title and phone-chat text become explicit post-production nodes with timing and placement.",
         "A voice bible is established for recurring speakers and the first calibration unit contains equivalent voice evidence without changing the baseline profile.",
         "Only the first unit receives complete English/Chinese H3 prompts in this turn; the remaining approved-scope units stay as a complete outline pending calibration approval.",
-        "The first unit ends with a fully specified stable exit state that can be restated as the next unit's opening state, and the adjacent boundary has one legal strategy."
+        "The first unit ends with a fully specified stable exit state that can be restated as the next unit's opening state, and the adjacent boundary has one legal strategy.",
+        "The calibration preview is delivered as conversation text, not as a packaged HTML page; no HTML is built in this turn because the remaining units are still pending approval."
       ]
     },
     {
@@ -130,7 +131,7 @@
         "The response presents one proposed row per exact filename and asks which named character or explicit off-screen source it locks to.",
         "The response asks whether each asset is audio reuse or audio reference and what traits or time range should transfer or be excluded.",
         "The mapping is not inferred from filename similarity, upload order, gender, or character order.",
-        "No Chinese director-storyboard prompt, English six-section prompt, or HTML deliverable is generated until the user explicitly confirms the map."
+        "No Chinese six-section prompt, English six-section prompt, or HTML deliverable is generated until the user explicitly confirms the map."
       ]
     }
   ]

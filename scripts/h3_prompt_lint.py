@@ -187,9 +187,14 @@ def lint_boundaries(source: str, unit_count: int) -> list[str]:
 
 
 def lint_chinese(prompt: str, index: int) -> tuple[list[str], list[re.Match[str]]]:
+    """Legacy storyboard validation, reached only by pre-v3.0 deliverables.
+
+    New work has no storyboard block: the Chinese six-section prompt is the base and
+    goes through lint_chinese_machine. Keep this path so old pages still validate.
+    """
     errors: list[str] = []
     if TITLE.search(prompt) is None:
-        errors.append("missing title in the form ‘中文分镜视图｜H3-XXX｜N秒’")
+        errors.append("legacy storyboard block: missing title in the form ‘中文审稿版｜H3-XXX｜N秒’")
     sections = ["角色与场景：", "镜头设计：", "声音：", "音乐："]
     offsets = [prompt.find(label) for label in sections]
     if any(offset < 0 for offset in offsets) or offsets != sorted(offsets):
