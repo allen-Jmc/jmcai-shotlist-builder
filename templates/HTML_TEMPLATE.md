@@ -253,6 +253,15 @@ In the MiniMax H3 Chinese prompt, preserve exactly one `非剧情音乐：` sect
 
 For Seedance, retain the original house layout. MiniMax H3 uses the card layout from `H3_PRODUCTION_LAYOUT.md`; keep each prompt pair inside one `h3-unit` article with its expanded upload checklist before both copy controls. The older prompt-cell example above defines metadata and prompt ordering, not a mandatory H3 table layout.
 
+## Delivery integrity
+
+Two rules the linters cannot enforce and that operators discover too late:
+
+- **The HTML never introduces a prompt.** Every copyable block must be byte-identical to the prompt already presented in conversation and confirmed by the user. Assembling the page is packaging, not rewriting: do not shorten, reorder, retranslate or "tidy" a prompt while moving it in. If a prompt needs a fix, fix it in conversation, get it re-confirmed, then rebuild the page.
+- **Never fabricate an asset path.** If an approved image, keyframe or audio file exists, link it by its exact filename. If it does not exist yet, render a labelled placeholder that names what is missing — never a guessed path, a stock URL, a data URI, or a thumbnail invented to fill the grid. A dead link in a production sheet reads as "the asset is ready", and the error surfaces only after a wasted generation run.
+
+The page must open from the filesystem with no server, no network and no dependencies.
+
 ### MiniMax H3 HTML escaping
 
 HTML-escape both prompt blocks before inserting them into `{H3_PROMPT_ZH_MACHINE}` and `{H3_PROMPT_EN_SIX_SECTION}` in this order:
