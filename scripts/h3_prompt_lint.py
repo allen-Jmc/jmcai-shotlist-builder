@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
-"""Lint paired MiniMax H3 Chinese storyboard and English six-section prompts."""
+"""Lint a MiniMax H3 unit's paired prompts.
+
+Two delivery shapes are recognised:
+
+- **dual-prompt** (default since v3.0) — one Chinese six-section prompt plus an
+  English six-section companion. Validated by ``lint_chinese_machine`` +
+  ``lint_pair_machine`` + ``lint_mandatory``. Every new deliverable uses this shape.
+- **legacy storyboard** (pre-v3.0) — a five-section Chinese storyboard plus an
+  English companion. Validated by ``lint_chinese`` + ``lint_pair``. Kept only so
+  older deliverables still pass; nothing new is authored in this shape, and none of
+  the v3 contract rules apply to it.
+
+The shape is detected from the blocks present in the page, so a single command
+covers both.
+"""
 
 from __future__ import annotations
 

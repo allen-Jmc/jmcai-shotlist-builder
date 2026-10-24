@@ -1,6 +1,6 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-3.4.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
@@ -285,4 +285,45 @@ git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git
 * **剧本全流程拆解**：*“我上传了一份短片剧本，请帮我拆解并制作完整的电影级分镜工单。”*
 * **ByteDance Seedance 提示词**：*“请使用 Seedance 2.5 规约，生成带 30 秒长运镜标定符号的视频提示词。”*
 * **MiniMax H3 生产工单**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与中英双版 Tab 的 HTML 生产工单。”*
+
+---
+
+## 十三、 版本与兼容性
+
+### v3.0 破坏性变更
+
+交付形态从「三模态」收敛为「中英双版」，旧版工单格式不再产出：
+
+| 项 | v2.x | v3.x |
+| --- | --- | --- |
+| 提示词交付 | 中文分镜版 + 中文执行版 + 英文执行版 | **中文版 + 英文版** |
+| 中文审阅层 | 有（不可复制） | **已删除** |
+| 资产标签 | `<主体 N>` / `<图片 N>` / `<音频 N>` | **`<Subject N>` / `<Picture N>` / `<Audio N>`** |
+| 中文段落名 | `角色与场景：` / `镜头设计：` / `声音：` / `音乐：` | **`主体定义：` / `任务摘要：` / `保留分析：` / `镜头详述：` / `环境音响：` / `非剧情音乐：`** |
+| 任务类型前缀 | `[参考生成]` | **`[reference generation]`** |
+| 镜头标记 | `[镜头 N]` | **`[Shot N]`** |
+
+`h3_prompt_lint.py` 保留 legacy 分支，**v3.0 之前的工单仍可校验**；但新任务一律产出双版格式。
+
+### 已知局限
+
+诚实列出，便于判断适用边界：
+
+1. **关键词级检查，不是语义检查。** `lint_mandatory` 只能证明「这句话写过」，证明不了「写得对」。把「不得互换画面左右」写成「可以互换」，检查照样通过。
+2. **资产验收依赖人眼。** 设定图的版式、遮脸、背景、脸部一致性（`PROMPT_TEMPLATE_ASSET_EXPANSION.md` §十四）无法脚本化。
+3. **表演质量不可自动评分。** 终审清单检查的是「有没有写」，不是「演得好不好」。
+4. **语速上限 4.5 字/秒，比部分外部规范保守。** 现实中争吵可达 5–6 字/秒，但生成模型在该速度下吞字概率显著上升，因此选择延长单元或拆分，不靠加速硬塞。
+5. **HTML 是单次打包产物。** 交付后的修改必须回写页面，否则页面与对话内容分叉。
+
+### 自检命令
+
+```bash
+python scripts/h3_prompt_lint.py      <工单.html>
+python scripts/h3_unit_lint.py        <工单.html>
+python scripts/h3_upload_order_lint.py <工单.html>
+python scripts/h3_regression_tests.py          # 回归测试
+python scripts/h3_upload_order_tests.py        # 上传清单单测
+```
+
+`evals/sample_h3_unit/` 是一份**三件套全通过**的完整样例，可作为工单结构的参照。
 
