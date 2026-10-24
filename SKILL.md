@@ -54,7 +54,7 @@ List script-derived assets in brief categories.
 
 Activate this extension only when the user explicitly asks to use, borrow, match, or transfer the aesthetic style of a provided reference image (including a user-designated video frame). An image upload alone does not activate it. Identity, wardrobe, prop, layout, or first/last-frame references retain their specified roles; do not silently treat them as style inputs. Reuse an explicit style decision within its stated scope until the user changes it.
 
-**Ask once when a reference cannot be classified.** If a supplied image fits none of the recognised roles — character identity, wardrobe, recurring prop, environment, first/last frame, or composition/action extraction — neither drop it silently nor assume it is a style reference. Ask one short question about its intended use and wait. An unclassifiable upload is a missing input, not a decision the user already made.
+**Classify first; ask only when the guess would change the whole map.** Give every supplied image a role by inference — character identity, wardrobe, recurring prop, environment, first/last frame, composition/action extraction, or style reference. When a role is genuinely ambiguous, take the least disruptive assumption, state it explicitly in `retention_analysis`, and keep working; never stall a production over a guess that affects one reference. Ask the user only when the assumption would change the entire asset map — for example, whether an image is the project's global style reference or an identity reference — because a wrong map poisons every downstream unit. Never drop an unclassifiable upload silently.
 
 Inspect the actual reference and extract only relevant, observable traits:
 

@@ -234,3 +234,81 @@ N/A
 3. **美学提示词**——中文原文原样嵌入英文版，它是跨资产复用的锁定串。
 
 翻译这三样中的任何一样，都会导致双版漂移或资产生成不一致。
+
+---
+
+## 8. 输出格式硬规则 (Format Hard Rules)
+
+以下规则不分平台、不分环境、不分智能体，**每一次输出都适用**。它们防的不是创意问题，是"交付物看起来对、实际不可用"。
+
+### 8.1 一个代码块，块外不写东西
+
+每个提示词必须装在**一个**围栏代码块里（` ```text `）。块内除提示词本身不写任何东西；块外不写前言、总结、说明或第二备选——除非用户明确要求解释。
+
+工单 HTML 中，可复制的提示词块必须是独立的 `<pre class="prompt-block">` 容器，与说明文字物理分离，确保"复制"按钮拿到的就是纯提示词。
+
+### 8.2 六段标题的格式禁令
+
+六个顶层字段必须以**精确小写、原样拼写、独立成行、行尾带冒号**的形式出现，顺序固定：
+
+```text
+subject_definitions:
+summary:
+retention_analysis:
+detailed_description:
+overall_soundscape:
+non_diegetic_music:
+```
+
+**禁止**：翻译标题、改名、加编号（`1.`）、加粗（`**summary:**`）、包进 Markdown 表格、转成无序列表、写成标题层级（`# summary`）。中文版的六个字段同理。
+
+标题被格式破坏后，模型会把它们当成正文，主体绑定与保留策略全部失效。
+
+### 8.3 空段落必须写显式声明
+
+任何一个字段没有内容要写时，**写一句简短的显式声明，不能留空，也不能整段删除**。
+
+- `non_diegetic_music: N/A` / `非剧情音乐：无配乐。`
+- `overall_soundscape: quiet room tone, no added effects.` / `环境音响：仅有室内底噪，无额外音效。`
+
+留空会让模型自行发挥，删除会让字段缺失、linter 直接判不合格。
+
+### 8.4 不加前言、解释、第二备选
+
+提示词正文里不出现：开场铺垫语、目的说明、创作思路、"以下是…"、备选方案 A/B、对操作员的提示。这些放在工单的说明区，不放在可复制提示词里。
+
+一个单元只交付一套确定的选择，不交付"也可以这样"。
+
+### 8.5 不得发明平台参数
+
+**绝不编造**模型不支持的分辨率、帧率、时长上限、采样参数、API 字段或平台开关。
+
+- 需要平台上限时，查 [MINIMAX_H3_PLATFORM_LIMITS.md](MINIMAX_H3_PLATFORM_LIMITS.md) 或项目已确认的规格；
+- 规格未知就不写，不要用"看起来合理"的数值填充；
+- 用户未指定画幅时，除剧本已声明外，不擅自写死画幅。
+
+编造参数比留空更危险：它会让操作员以为该设置可用，实际在平台上无法执行。
+
+### 8.6 防题材偏见清单
+
+不得因为题材未明确就默认套用以下任何一类：日式设定、冬季场景、恋爱氛围、祈祷/宗教意象、超写实照片质感、音乐录影带式剪辑。
+
+默认值必须来自剧本、用户指令或项目已批准的风格块。剧本没写的，按人物与情境做最少假设，并在 `retention_analysis` 里标明这是推断。
+
+### 8.7 风格参考与连续性锁定的固定模板
+
+当上传图只作视觉风格参考时，英文版必须使用以下定义（把 `<Subject N>` 换成实际编号）：
+
+```text
+<Subject N> is reference image N used solely as a visual-style reference. Transfer only its artistic direction, cinematography, lens character, color palette, saturation, color-temperature relationship, exposure, contrast, lighting logic, material rendering, depth of field, bokeh texture, grain, highlight roll-off, shadow density, atmospheric perspective, and overall mood. Do not transfer any recognizable people, faces, hairstyle, wardrobe, objects, architecture, text, composition, camera angle, pose, or action from <Subject N>.
+```
+
+并在 `detailed_description` 开头加连续性锁定：
+
+```text
+All shots must continuously retain <Subject N>'s overall color system, color-temperature relationship, luminance distribution, contrast, key-light direction, light softness, environmental bounce logic, material detail, focal-length feel, depth-of-field relationship, bokeh behavior, grain scale, highlight roll-off, shadow density, atmospheric perspective, and artistic mood. Cuts must not cause a jump in grading, lighting ratio, skin tone, sharpness, grain, bokeh, or lens texture.
+```
+
+中文版用同义自然语言表述，语义必须与英文版逐项对应；不得因为"中文不好写"就省略其中的技术维度。
+
+风格参考是可选项。没有风格参考时，按用户书面风格指令或项目已批准的风格块执行，从内容参考中推导克制的连续性约束，不发明题材化方向。
