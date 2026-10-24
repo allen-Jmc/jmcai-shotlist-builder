@@ -168,7 +168,7 @@ For MiniMax H3, now complete the whole requested-scope `H3_UNIT_BLUEPRINT` from 
 
 For multi-unit or full-scope H3 work, build only the first unit as the calibration preview and deliver it **as conversation text, not HTML** — a calibration exists to be corrected, and rebuilding a page per correction wastes the round trip. Include its timing math, truth ledger, shot plan, voice evidence, both prompts, shot ladder, and boundary ledger, then stop. Approval authorizes expansion; corrections rerun the calibration. **Pack the HTML once, after the last unit is approved.**
 
-## Phase 4 — Direct, pack, and generate HTML
+## Phase 4 — Direct, then pack
 
 ### Shared directing core
 
@@ -216,7 +216,7 @@ The template's `{PLAN_CODE}`, `{PLAN_LABEL}`, `{PLAN_OPTIONS}`, and `{N_PLANS}` 
 For H3, include exactly one Chinese six-section copy control and one English six-section copy control per unit — that pair is the deliverable. Include the unit blueprint summary, `VOICE_BIBLE`, `POST_NODES`, runtime totals, scene shot ladder, pairwise boundary ledgers, and per-unit planning metadata.
 
 
-When the user requests revisions after delivery, edit and re-present the HTML rather than dumping replacement prompt text into chat.
+Before packing, revise in conversation — the cheap stage. After delivery, edits go back into the HTML; a stale page outlives correction.
 
 ## Hard invariants
 
