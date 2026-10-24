@@ -1,6 +1,6 @@
 # MiniMax H3 Routing for JMCAI Shotlist Builder
 
-Use this file only after the user has selected **MiniMax H3** at the platform gate. The default delivery is a paired prompt for every unit: the Chinese director storyboard defined in `SKILL.md`, followed by the English six-section companion defined in `MINIMAX_H3_DUAL_PROMPT_CONTRACT.md` and `MINIMAX_H3_FULL_REFERENCE_EN.md`. `MINIMAX_H3_BASE_EN.md` remains the timing, keyframe, camera, dialogue, and sound source for both serializations.
+Use this file only after the user has selected **MiniMax H3** at the platform gate. The default delivery is a paired prompt for every unit: the Chinese six-section prompt defined in `SKILL.md`, followed by the English six-section companion defined in `MINIMAX_H3_DUAL_PROMPT_CONTRACT.md` and `MINIMAX_H3_FULL_REFERENCE_EN.md`. `MINIMAX_H3_BASE_EN.md` remains the timing, keyframe, camera, dialogue, and sound source for both serializations.
 
 ## 1. Choose the H3 mode by asset role
 
@@ -33,7 +33,7 @@ If an image or video role is ambiguous, ask whether it is a concrete frame ancho
 - Every H3 clip with a human vocal event: read both `MINIMAX_H3_EMOTION_PERFORMANCE.md` and `MINIMAX_H3_ACTOR_DIALOGUE_CRAFT.md` completely.
 - Always resolve `AUDIO_REFERENCE_INTENT` using `MINIMAX_H3_AUDIO_REFERENCE_BINDING.md`: ask once if unknown; only explicit refusal skips binding. If requested, confirm the operator-side filename → clip-local upload slot → character `AUDIO_REFERENCE_MAP`. Pending intent/files/bindings prevent final sound-bearing prompt delivery, not independent visual planning. Never invent audio-routing syntax for unbound inputs.
 
-Do not translate, rename, reorder, merge, or embellish either schema. The five Chinese director-storyboard sections remain isolated in their block; the six English fields remain isolated in the companion block.
+Do not translate, rename, reorder, merge, or embellish either schema. The six Chinese sections remain isolated in their block; the six English fields remain isolated in the companion block.
 
 For creative decisions inside those fields, apply this priority order: explicit user direction and submitted style/content references → screenplay facts and approved blocking → `MINIMAX_H3_DIRECTORIAL_NATURAL_LANGUAGE.md` → this routing/timing layer → general camera or house-style libraries. Canonical guides control protocol syntax; they do not override the user's content, the script's reality, or a motivated director decision.
 
@@ -65,13 +65,13 @@ Before writing the canonical fields, copy the unit's full `OPENING_STATE`, `rela
 1. `DIRECTOR_INTENT` for the full clip: dramatic question, point-of-view ownership, emotional movement, visual reveal, and stable final image.
 2. `SHOT_SCORE` for each internal shot: narrative purpose, time window, framing and crop, camera height and angle, screen geography, focal plane, motivated motion or stillness, action onset/change/result, performance turn, editorial trigger, and landing state.
 
-Do not expose these names as another top-level H3 field. Translate their decisions into chronological prose inside `镜头设计：`.
+Do not expose these names as another top-level H3 field. Translate their decisions into chronological prose inside `镜头详述：`.
 
 ## 4. Preserve the shotlist's direction without polluting H3 syntax
 
 Compile each prompt from the complete approved `SOURCE_BEATS`, `PROP_STATE_CHAIN`, `POST_NODES`, and `SHOT_BEAT`, not merely its visible-action cell or a shortened scene summary. Environment-only establishes, entrances/exits, visible-text reveal timing and either exact model-rendered text or the approved clean-plate/post-node plan, significant wardrobe/body reveals, recurring-prop opening states and state-changing actions, lens/shot-size, crop, camera height and angle, left/right and depth positions, focus, camera behavior, performance beats, dialogue, listener reaction, synchronized sound, and landing frame must all survive into the authoritative natural-language description. If a source field disappears during serialization, the prompt fails even if the HTML table still displays it or the asset appears in `subject_definitions`.
 
-Translate the approved cinematography into the single authoritative Chinese `镜头设计：` section:
+Translate the approved cinematography into the single authoritative Chinese `镜头详述：` section:
 
 - State composition, focal length, subject position, practical lighting, action, state change, and background activity where visible.
 - State the shot size and crop together, plus camera height/angle, screen-left/right placement, foreground/middle/background layers, and the intended first visual focus.
@@ -88,7 +88,7 @@ Translate the approved cinematography into the single authoritative Chinese `镜
 
 ## 5. Dialogue and voice consistency
 
-For the default Chinese director storyboard, do not use speaker IDs or visual H3 tags. The only conditional H3 reference token allowed is an approved `<Audio N>` from `AUDIO_REFERENCE_MAP`, embedded exactly as specified in `MINIMAX_H3_AUDIO_REFERENCE_BINDING.md`: once in a compact binding line under `角色与场景：` and again at the owning vocal event. Bind each vocal event to the real visible or explicit off-screen source in prose. State the locked voice baseline, visible action, emotional delivery, pace, pause, breath, and ending before a colon; put the exact approved spoken line alone on the following line. This line break is the only speech boundary.
+For the default Chinese six-section prompt, do not use speaker IDs or visual H3 tags. The only conditional H3 reference token allowed is an approved `<Audio N>` from `AUDIO_REFERENCE_MAP`, embedded exactly as specified in `MINIMAX_H3_AUDIO_REFERENCE_BINDING.md`: once in a compact binding line under `主体定义：` and again at the owning vocal event. Bind each vocal event to the real visible or explicit off-screen source in prose. State the locked voice baseline, visible action, emotional delivery, pace, pause, breath, and ending before a colon; put the exact approved spoken line alone on the following line. This line break is the only speech boundary.
 - Treat all scripted speech as locked source text: dialogue, voice-over, lyrics, announcements, and spoken on-screen text must remain word-for-word, punctuation-for-punctuation, in their original language and original order. Do not abridge, paraphrase, euphemize, combine, or rewrite it to hit a clip duration. A textual change is allowed only after explicit user approval.
 - For Chinese speech, count audible Han characters and schedule each vocal event at 4.0–4.5 characters per second unless the user explicitly supplies another rate; use 4.25 as the default directing rate. Punctuation does not count as a spoken character, but commas, ellipses, sentence endings, hesitation, breath, and emotional recovery require additional time outside the character-rate calculation. This is internal timing math, not a performance command to paste into the copyable H3 prompt.
 - Compute `minimum_speech_time = audible_Han_character_count / selected_rate`. Then add the pre-line acting beat, punctuation pauses, post-line hold, listener reaction, and any camera transition to derive the unit duration. If the result does not fit the current envelope, lengthen the unit or create another `H3_UNIT` at a natural boundary. Never solve an overfull timeline by changing the words or accelerating above 4.5 characters per second. In the H3 prompt, state the real start/end window and meaningful pauses, then direct natural phrasing rather than saying “X characters per second.”
@@ -114,7 +114,7 @@ For Ref2VA voice or audio references:
 - Default to one filename ↔ one target character. Mixed/shared exceptions require explicit user approval and unambiguous speaker/time ranges.
 - Define `<Audio N>` only for an explicit standalone audio asset or an enabled audio track that is actually copied or referenced. A reference video does not automatically create an audio label.
 - Keep the exact confirmed filename outside both prompt blocks. In the English companion, bind the real upload slot to the target speaker ID without a filename, for example: `<Audio 1> is the voice-timbre and speaking-delivery reference for <Subject 1> (S1).` Keep the Chinese storyboard free of H3 reference tags.
-- Repeat that mapping naturally at the speaker's actual vocal event in both the Chinese `镜头设计：` and English `detailed_description`.
+- Repeat that mapping naturally at the speaker's actual vocal event in both the Chinese `镜头详述：` and English `detailed_description`.
 - Do not put `(Sx)` in `retention_analysis`.
 - If only timbre, rhythm, emotion, or delivery is referenced, do not import the source audio's words.
 - If dialogue from reference audio is reused or explicitly reperformed, preserve its words and language; write `[unclear]` rather than guessing unintelligible spans, and normalize only decorative punctuation.
@@ -141,13 +141,14 @@ Before placing an H3 prompt in the HTML, verify all applicable checks:
 - A same-scene next unit fully restates the prior unit's visible exit state instead of relying on “same as before.”
 - The final HTML contains one machine-readable `article.h3-unit` record per English/Chinese prompt pair and passes `scripts/h3_unit_lint.py`.
 
-### Chinese director storyboard (default)
+### Chinese six-section prompt (default)
 
-- The title and sections appear exactly once and in this order: `中文分镜视图｜H3-XXX｜N秒`, `角色与场景：`, `镜头设计：`, `声音：`, `音乐：`.
+- The six sections appear exactly once and in this order: `主体定义：`, `任务摘要：`, `保留分析：`, `镜头详述：`, `环境音响：`, `非剧情音乐：`.
+- Subject slots use `<Subject N>`; every slot is defined before use and keeps one meaning throughout the prompt.
 - I2VA, FL2VA, or L2VA keyframe alignment is described by the opening/landing states inside the relevant shot; do not emit a separate Base-Mode preamble.
-- Shot numbers are consecutive, ranges are continuous, and the last range ends at the declared clip duration.
-- Dialogue has no `<d>` tags: its delivery ends in a colon and the verbatim line occupies the next line alone.
-- If `AUDIO_REFERENCE_MAP` is active, show the exact filename, upload slot, and locked character in an operator checklist outside both copyable prompts. `角色与场景：` contains one filename-free compact binding line per active `<Audio N>`, with target source, `Audio mode`, `Retention`, scope, and exclusions; it contains no `<Subject N>`, `<Picture N>`, `<Video N>`, or `(Sx)`. Each label recurs at its owning Chinese vocal event. If the map is inactive, neither prompt contains audio-routing fields.
+- Shot numbers are consecutive, cut times increase, and the last shot ends at the declared clip duration.
+- Dialogue sits inside `<d>[中文] … </d>` with a `(Sx)` speaker binding; facial actions and camera directions stay outside the container.
+- If `AUDIO_REFERENCE_MAP` is active, show the exact filename, upload slot, and locked character in an operator checklist outside both copyable prompts. The `<Audio N>` label appears at the subject definition and again at its owning vocal event, carrying target source, `Audio mode`, `Retention`, scope, and exclusions. If the map is inactive, neither prompt contains audio-routing fields.
 
 ### Ref2VA
 
@@ -227,7 +228,7 @@ Before placing an H3 prompt in the HTML, verify all applicable checks:
 
 ### Chinese/English pair parity audit
 
-- Each H3 unit contains two separately labeled and independently copyable blocks in this order: `中文分镜视图` first, `English six-section prompt` second.
+- Each H3 unit contains two separately labeled and independently copyable blocks in this order: `中文版` first, `English six-section prompt` second.
 - The Chinese block remains natural Chinese director prose with no H3 visual/dialogue tags; only confirmed `<Audio N>` tokens and their compact mixed-language routing block are conditionally allowed. The English block keeps the canonical six field names and H3 reference/dialogue tokens.
 - Both blocks encode the same unit truth: reference roles, audio mode/retention scope when active, shot count/order, cut times, speaker identities, exact original-language dialogue payloads, emotional turns, action/prop states, sound events, music decision, and exit state. The operator checklist separately locks each audio filename to the English `<Audio N>` upload slot and target character.
 - Any edit to one block is synchronized into the other before delivery. Resolve discrepancies by returning to the approved `CLIP_TRUTH_LEDGER` and `SHOT_SCORE`, not by silently treating either serialization as expendable.

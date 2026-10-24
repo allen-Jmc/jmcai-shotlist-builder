@@ -153,7 +153,7 @@ When the script supports more than one plausible interpretation and the choice w
 - Put emotion intent, voice profile, delivery, physical action, and timing outside `<d>`.
 - Put the one dominant delivery cue immediately adjacent to `<d>`; do not bury it after camera setup or character-rate math. When helpful, state the unwanted reading explicitly, such as “not neutral,” “not contemptuous,” or “not a recital.”
 - In the canonical English prompt, write the performance as natural chronological English.
-- In the Chinese director storyboard, use the parent SKILL's natural Chinese sections and colon-plus-next-line speech boundary, without `<d>` or visual reference tags. The English companion alone uses its six-section syntax. Both serialize the same shot times, exact spoken words, vocal source, emotional turn, sound design, and constraints; syntax is not mirrored literally.
+- In the Chinese six-section prompt, use the parent SKILL's natural Chinese sections and colon-plus-next-line speech boundary, without `<d>` or visual reference tags. The English companion alone uses its six-section syntax. Both serialize the same shot times, exact spoken words, vocal source, emotional turn, sound design, and constraints; syntax is not mirrored literally.
 
 ## 9. Anti-recital audit
 

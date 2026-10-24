@@ -108,19 +108,19 @@ def chinese_machine_prompt(
 ) -> str:
     """构造合规的中文机读六段式测试夹具提示词。"""
     music = "稀疏钢琴单音在最后一个呼吸前进入，停在尾态前。" if scored else "无配乐。"
-    summary = "任务摘要：\n[参考生成] 目标视频展示 <主体 1> 在窗边许下安静承诺。"
-    retention = "保留分析：\n<主体 1>：reference, 保留角色身份五官与服装，窗边站位与动作由本场景生成。"
+    summary = "任务摘要：\n[参考生成] 目标视频展示 <Subject 1> 在窗边许下安静承诺。"
+    retention = "保留分析：\n<Subject 1>：reference, 保留角色身份五官与服装，窗边站位与动作由本场景生成。"
     if bad_order:
         summary, retention = retention, summary
     return f"""主体定义：
-<主体 1>：苏晚，年轻中国女性，穿深色针织衫。
+<Subject 1>：苏晚，年轻中国女性，穿深色针织衫。
 
 {summary}
 
 {retention}
 
 镜头详述：
-[镜头 1] 0.0—5.0秒。50毫米固定侧面中景，<主体 1> 位于画面左侧，先看向窗外再收回视线。(S1) 以低中音语速说：
+[镜头 1] 0.0—5.0秒。50毫米固定侧面中景，<Subject 1> 位于画面左侧，先看向窗外再收回视线。(S1) 以低中音语速说：
 <d>[中文]{dialogue}</d>
 [镜头 2] 00:05.000至00:12.000。正面近景，她闭口看向窗外，保持稳定姿势至结束。
 
@@ -137,7 +137,7 @@ def escape(prompt: str) -> str:
 
 def html_document(
     *,
-    zh: str,
+    zh: str | None,
     en: str | None,
     zh_machine: str | None = None,
     displayed_runtime: int = 12,
@@ -147,13 +147,18 @@ def html_document(
     zh_machine_block = (
         "" if zh_machine is None else f'<pre class="prompt-block prompt-zh-machine">{escape(zh_machine)}</pre>'
     )
+    zh_block = (
+        ""
+        if zh is None
+        else f'<b>中文审稿版｜H3-001｜12秒</b><pre class="prompt-block">{escape(zh)}</pre>'
+    )
     return f"""<!doctype html><html><body>
 <div data-h3-packed-runtime-seconds="{displayed_runtime}"><b>{displayed_runtime}s</b> packed runtime</div>
 <article class="h3-unit" data-h3-unit="H3-001" data-unit-kind="dialogue"
  data-duration-seconds="12" data-dialogue-effective-chars="{dialogue_chars}"
  data-relationship-turn="承诺" data-action-chain="开口到闭口"
  data-opening-state="人物静止" data-exit-state="人物闭口" data-duration-exception-reason="">
-<b>中文审稿版｜H3-001｜12秒</b><pre class="prompt-block">{escape(zh)}</pre>
+{zh_block}
 {zh_machine_block}
 {en_block}
 </article></body></html>"""
@@ -188,6 +193,22 @@ def main() -> int:
     valid_tri_result = run(PROMPT_LINT, valid_tri_modal)
     require(valid_tri_result.returncode == 0, valid_tri_result.stdout + valid_tri_result.stderr)
     require("dual-prompt" in valid_tri_result.stdout, f"expected dual-prompt PASS message, got {valid_tri_result.stdout}")
+
+    # Dual-prompt delivery: the Chinese six-section prompt is the deliverable and no
+    # storyboard view is present at all. This is the default shape of a new deliverable.
+    valid_pair = html_document(zh=None, zh_machine=chinese_machine_prompt(), en=six_section_prompt())
+    valid_pair_result = run(PROMPT_LINT, valid_pair)
+    require(valid_pair_result.returncode == 0, valid_pair_result.stdout + valid_pair_result.stderr)
+    require("dual-prompt" in valid_pair_result.stdout, f"expected dual-prompt PASS, got {valid_pair_result.stdout}")
+
+    bad_pair_dialogue = run(
+        PROMPT_LINT,
+        html_document(zh=None, zh_machine=chinese_machine_prompt(dialogue="我绝不回来。"), en=six_section_prompt()),
+    )
+    require(
+        bad_pair_dialogue.returncode != 0 and "dialogue mismatch" in bad_pair_dialogue.stdout,
+        bad_pair_dialogue.stdout,
+    )
 
     bad_tri_dialogue = run(
         PROMPT_LINT,

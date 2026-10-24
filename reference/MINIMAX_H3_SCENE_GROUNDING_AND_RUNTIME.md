@@ -75,7 +75,7 @@ Required fields:
 | `forbidden_cross_scene_terms` | Salient objects, sounds or settings belonging to other scenes |
 | `prompt_evidence` | Exact English and Chinese prompt sentences implementing each item |
 
-Every concrete noun, event, visible state and sound in the final Chinese director storyboard and its constraints must be traceable to this ledger. A generic cinematic embellishment is not evidence.
+Every concrete noun, event, visible state and sound in the final Chinese six-section prompt and its constraints must be traceable to this ledger. A generic cinematic embellishment is not evidence.
 
 ### Per-clip sound rule
 
@@ -85,9 +85,9 @@ The same isolation applies to style openings and continuity prose. A street clip
 
 ## 4. Canonical dual-prompt serialization rules
 
-- Every H3 unit contains two separate copyable blocks compiled from the same `CLIP_TRUTH_LEDGER`: a Chinese director storyboard followed by an English six-section companion.
-- The Chinese schema is exactly: `中文分镜视图｜H3-XXX｜N秒`, then `角色与场景：`, `镜头设计：`, `声音：`, and `音乐：` in that order. Do not add English field names, six-section labels, visual/dialogue tags, or an optional preamble inside this block. The sole conditional exception is the approved `<Audio N>` mixed-language binding block inside `角色与场景：` defined by `MINIMAX_H3_AUDIO_REFERENCE_BINDING.md`.
-- `镜头设计：` contains chronological entries in the form `【镜头N｜起始—结束秒】`. Start at 0.0 seconds, number shots consecutively, and cover the requested duration without gaps or overlap.
+- Every H3 unit contains two separate copyable blocks compiled from the same `CLIP_TRUTH_LEDGER`: a Chinese six-section prompt followed by an English six-section companion.
+- The Chinese schema is exactly: `主体定义：`, `任务摘要：`, `保留分析：`, `镜头详述：`, `环境音响：`, `非剧情音乐：` in that order. Do not add English field names or an optional preamble inside this block.
+- `镜头详述：` contains chronological entries in the form `【镜头N｜起始—结束秒】`. Start at 0.0 seconds, number shots consecutively, and cover the requested duration without gaps or overlap.
 - For a Chinese user or third-party H3 caller, write the complete copyable prompt in natural Chinese. The official Base guide may inform internal keyframe, camera, dialogue, and sound decisions, but its three field labels must not appear in the submission prompt.
 - Preserve each spoken line verbatim. Put the visible/off-screen speaker, locked voice baseline, action, and delivery immediately before a colon; place only the spoken line on the following line. Do not use `<d>`, `<Subject N>`, `<Picture N>`, `<Video N>`, `(Sx)`, quotation wrappers, or bracketed “non-spoken” annotations. An approved `<Audio N>` may appear only in its binding block and the matching vocal event; when no audio reference is requested, all audio-routing keywords are absent.
 - Do not serialize database/table delimiters such as `|` as directing prose, except the required vertical divider inside the title and shot header.
@@ -127,7 +127,7 @@ Then build only the first requested `H3_UNIT` as a calibration preview. Show:
 - the unit's effective speech count, `relationship_turn`, `action_chain`, `OPENING_STATE`, `exit_state`, applicable `VOICE_BIBLE` entries, and `POST_NODES`;
 - internal shot plan;
 - a full-scene `SCENE_SHOT_LADDER`, plus one `CLIP_BOUNDARY_LEDGER` row for every adjacent pair showing strategy, outgoing last frame, incoming first frame, cut trigger, invariants, deliberate differences, and head/tail handles;
-- one copyable Chinese director-storyboard prompt and one copyable English six-section companion;
+- one copyable Chinese six-section prompt and one copyable English six-section companion;
 - document-boundary, contamination, soundscape, Chinese-storyboard serialization, coverage, pairwise-boundary, jump-cut-risk, and VO visual-risk audit results.
 
 Then stop for user approval. Only an explicit approval authorizes generation of the remaining scenes. If the user corrects the calibration, update the shared directing rules and re-run the calibration before expanding to the full film.

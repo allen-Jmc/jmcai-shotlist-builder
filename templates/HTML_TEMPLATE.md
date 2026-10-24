@@ -166,7 +166,7 @@ For every adjacent ordered `H3_UNIT` pair, add exactly one machine-readable boun
 
 `data-boundary-strategy` must be exactly one of `exact_match_continuation`, `contrast_cut`, `neutral_bridge`, or `scene_transition`. `data-outgoing-frame`, `data-incoming-frame`, and `data-cut-trigger` must be nonempty. The visible table should also show continuity invariants, deliberate differences, requested versus supported/observed durations, head/tail edit handles, and current review status.
 
-For MiniMax H3, replace the single block above with this paired Chinese director-storyboard and English six-section prompt block for every unit:
+For MiniMax H3, replace the single block above with this paired Chinese six-section and English six-section prompt block for every unit:
 
 ```html
 <article class="h3-unit"
@@ -196,26 +196,15 @@ For MiniMax H3, replace the single block above with this paired Chinese director
 
   {UNIT_UPLOAD_ORDER_CHECKLIST}
 
-  <!-- 中英双版提示词容器 (零外部依赖，纯原生无刷新切换)。交付物是后两个 Tab；第一个是审阅视图，不提供复制。 -->
+  <!-- 中英双版提示词容器 (零外部依赖，纯原生无刷新切换)。只有两版，都是可直接粘贴的生成用提示词。 -->
   <div class="prompt-tabs-container">
     <div class="prompt-tabs-nav">
-      <button type="button" class="tab-btn active" data-tab="zh" onclick="switchPromptTab(this, 'zh')">中文分镜视图</button>
-      <button type="button" class="tab-btn" data-tab="zh-exec" onclick="switchPromptTab(this, 'zh-exec')">中文版</button>
+      <button type="button" class="tab-btn active" data-tab="zh-exec" onclick="switchPromptTab(this, 'zh-exec')">中文版</button>
       <button type="button" class="tab-btn" data-tab="en" onclick="switchPromptTab(this, 'en')">英文版</button>
     </div>
 
-    <!-- 中文分镜视图 (导演/制片/客户审阅用；纯中文自然语言，不可直接粘贴给模型) -->
-    <div class="prompt-tab-pane tab-pane-zh active">
-      <div class="prompt-pane-header">
-        <b style="color:#d1a461;">中文分镜视图｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
-        <span style="color:#8892b0; font-size:11px;">[{TAG}]</span>
-        <span style="color:#f0a35e; font-size:11px;">仅供审阅，不可直接用于生成</span>
-      </div>
-      <div class="prompt-block prompt-zh">{H3_PROMPT_ZH_STORYBOARD}</div>
-    </div>
-
     <!-- 中文版 (交付物之一：中文六段式，国内模型直投生成用) -->
-    <div class="prompt-tab-pane tab-pane-zh-exec tab-pane-zh-machine" style="display:none;">
+    <div class="prompt-tab-pane tab-pane-zh-exec tab-pane-zh-machine active">
       <div class="prompt-pane-header">
         <b style="color:#34d399;">中文版 (Chinese Six-Section)｜{UNIT_ID}｜{DURATION_SECONDS}秒</b>
         <span style="color:#8892b0; font-size:11px;">[{TAG}]</span>
@@ -248,9 +237,8 @@ Fill every platform placeholder consistently; never mix values across rows.
 | `{PROMPT_TITLE}` | `Seedance 2.0 提示词` | `MiniMax H3 prompts` |
 | `{PROMPT_LANGUAGE_SUMMARY}` | `with detailed Chinese cinematic prompts` | `with paired Chinese and English H3 prompts` |
 | `{PROMPT_COLUMN_LABEL}` | `Seedance 2.0 提示词` | `MiniMax H3 中英双提示词` |
-| `{PROMPT_BLOCK_LABEL}` | `提示词` | `中文分镜视图` |
-| `{VIDEO_PROMPT}` | The complete Chinese Seedance prompt | Replaced by `{H3_PROMPT_ZH_STORYBOARD}` |
-| `{H3_PROMPT_ZH_STORYBOARD}` | N/A | One copyable Chinese prompt with title, `角色与场景：`, timed `镜头设计：`, `声音：`, and `音乐：` |
+| `{PROMPT_BLOCK_LABEL}` | `提示词` | `中文版` |
+| `{VIDEO_PROMPT}` | The complete Chinese Seedance prompt | Replaced by `{H3_PROMPT_ZH_MACHINE}` |
 | `{H3_PROMPT_ZH_MACHINE}` | N/A | One copyable Chinese six-section prompt with `主体定义`, `任务摘要`, `保留分析`, `镜头详述`, `环境音响`, and `非剧情音乐`. Required for every H3 unit — it is the Chinese half of the delivered pair |
 | `{H3_PROMPT_EN_SIX_SECTION}` | N/A | One copyable English prompt with `subject_definitions`, `summary`, `retention_analysis`, `detailed_description`, `overall_soundscape`, and `non_diegetic_music` |
 | `{CINEMATIC_SHOT_BADGES}` | Empty | Shot badges bar for focal length, shot size, camera move, lighting, micro-acting |
@@ -261,19 +249,19 @@ Fill every platform placeholder consistently; never mix values across rows.
 | `{H3_PROJECT_PLANNING_BLOCKS}` | Empty | Unit blueprint, voice bible, post nodes, and runtime reconciliation |
 | `{AUDIO_REFERENCE_MAP_BLOCK}` | Empty | Conditional approved filename-to-character audio lock table; empty when no audio reference was requested |
 
-In the MiniMax H3 Chinese director storyboard, preserve exactly one `音乐：` section. A user instruction prohibiting background music takes priority: render `无配乐。` and English `non_diegetic_music: N/A`, with no score cues elsewhere. Otherwise follow the source or approved directing decision. Do not place audience-only score description elsewhere in the prompt block.
+In the MiniMax H3 Chinese prompt, preserve exactly one `非剧情音乐：` section. A user instruction prohibiting background music takes priority: render `无配乐。` and English `non_diegetic_music: N/A`, with no score cues elsewhere. Otherwise follow the source or approved directing decision. Do not place audience-only score description elsewhere in the prompt block.
 
 For Seedance, retain the original house layout. MiniMax H3 uses the card layout from `H3_PRODUCTION_LAYOUT.md`; keep each prompt pair inside one `h3-unit` article with its expanded upload checklist before both copy controls. The older prompt-cell example above defines metadata and prompt ordering, not a mandatory H3 table layout.
 
 ### MiniMax H3 HTML escaping
 
-HTML-escape both prompt blocks before inserting them into `{H3_PROMPT_ZH_STORYBOARD}` and `{H3_PROMPT_EN_SIX_SECTION}` in this order:
+HTML-escape both prompt blocks before inserting them into `{H3_PROMPT_ZH_MACHINE}` and `{H3_PROMPT_EN_SIX_SECTION}` in this order:
 
 1. `&` → `&amp;`
 2. `<` → `&lt;`
 3. `>` → `&gt;`
 
-Do not otherwise rewrite the Chinese director storyboard or replace its line breaks. The Copy button uses `textContent`, so it preserves the exact user-facing prompt.
+Do not otherwise rewrite the Chinese six-section prompt or replace its line breaks. The Copy button uses `textContent`, so it preserves the exact user-facing prompt.
 
 ## Visual Presentation Modules (H3 Production Upgrades)
 

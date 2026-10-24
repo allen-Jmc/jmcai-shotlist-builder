@@ -32,6 +32,7 @@ SHOT_TIME_RE = re.compile(
 )
 CHINESE_TITLE_RE = re.compile(r"^中文(?:审稿版|分镜版|分镜视图)｜H3-[\w-]+｜\d+(?:\.\d+)?秒\s*$", re.MULTILINE)
 ZH_MACHINE_START_RE = re.compile(r"^主体定义：\s*$", re.MULTILINE)
+ZH_MACHINE_DIALOGUE_RE = re.compile(r"<d>\[[^\]]+\](?P<text>.*?)</d>", re.DOTALL)
 ENGLISH_SIX_SECTION_RE = re.compile(r"^subject_definitions:\s*$", re.MULTILINE | re.IGNORECASE)
 PACKED_RUNTIME_RE = re.compile(
     r"<(?P<tag>[A-Za-z][\w:-]*)\b(?P<attrs>[^>]*\bdata-h3-packed-runtime-seconds\s*=\s*"
@@ -58,6 +59,16 @@ def effective_dialogue_chars(prompt: str) -> int:
         match.group("quoted") or match.group("plain") or ""
         for match in CHINESE_DIALOGUE_RE.finditer(prompt)
     )
+    return len(EFFECTIVE_CHAR_RE.findall(spoken))
+
+
+def machine_dialogue_chars(prompt: str) -> int:
+    """Effective spoken characters in a Chinese six-section prompt.
+
+    Dual-prompt delivery has no storyboard block, so the speech budget is counted
+    from the `<d>` containers instead of the storyboard's colon-and-newline lines.
+    """
+    spoken = "".join(match.group("text") for match in ZH_MACHINE_DIALOGUE_RE.finditer(prompt))
     return len(EFFECTIVE_CHAR_RE.findall(spoken))
 
 
@@ -136,19 +147,31 @@ def main() -> int:
         english_blocks = [block for block in blocks if ENGLISH_SIX_SECTION_RE.search(block)]
         chinese_machine_blocks = [block for block in blocks if ZH_MACHINE_START_RE.search(block)]
 
+        dual_prompt_only = bool(chinese_machine_blocks) and not chinese_blocks
         has_machine = len(chinese_machine_blocks) > 0
-        valid_counts = (
-            (len(blocks) == 3 and len(chinese_blocks) == 1 and len(english_blocks) == 1 and len(chinese_machine_blocks) == 1)
-            if has_machine
-            else (len(blocks) == 2 and len(chinese_blocks) == 1 and len(english_blocks) == 1)
-        )
+        if dual_prompt_only:
+            valid_counts = len(blocks) == 2 and len(chinese_machine_blocks) == 1 and len(english_blocks) == 1
+        elif has_machine:
+            valid_counts = (
+                len(blocks) == 3
+                and len(chinese_blocks) == 1
+                and len(english_blocks) == 1
+                and len(chinese_machine_blocks) == 1
+            )
+        else:
+            valid_counts = len(blocks) == 2 and len(chinese_blocks) == 1 and len(english_blocks) == 1
+
         if not valid_counts:
             computed_chars = -1
             unit_errors.append(
-                "expected exactly one Chinese director-storyboard block and one English "
-                f"six-section block (optional one Chinese machine block), found {len(chinese_blocks)} Chinese / "
-                f"{len(chinese_machine_blocks)} Chinese machine / {len(english_blocks)} English / {len(blocks)} total"
+                "expected one Chinese prompt block and one English six-section block, found "
+                f"{len(chinese_blocks)} storyboard / {len(chinese_machine_blocks)} Chinese six-section / "
+                f"{len(english_blocks)} English / {len(blocks)} total"
             )
+        elif dual_prompt_only:
+            computed_chars = machine_dialogue_chars(chinese_machine_blocks[0])
+            # Cut markers inside a six-section prompt are checked for Chinese/English
+            # parity by h3_prompt_lint; this script owns unit duration and speech budget.
         else:
             prompt = chinese_blocks[0]
             computed_chars = effective_dialogue_chars(prompt)

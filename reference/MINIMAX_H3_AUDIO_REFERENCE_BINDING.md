@@ -48,15 +48,15 @@ Once approved, freeze the filename-to-character relationship across the requeste
 - Do not use `fully_copy` for a voice clip when the prompt also creates new rain, effects, dialogue, or music around it; that is normally `partially_copy`.
 - When only voice timbre or delivery is referenced, keep the target script's exact dialogue and explicitly exclude the reference file's original words and waveform.
 
-## 4. Chinese director storyboard
+## 4. Chinese six-section prompt
 
-Keep the five existing top-level sections unchanged and keep this block independently readable. When the current unit uses approved reference audio, add one compact binding line per active audio inside `角色与场景：` using this shape:
+Keep the five existing top-level sections unchanged and keep this block independently readable. When the current unit uses approved reference audio, add one compact binding line per active audio inside `主体定义：` using this shape:
 
 ```text
 <Audio 1>：目标角色 FLICK；Audio mode: audio reference；Retention: reference；作用范围：音色、共鸣、咬字、呼吸与说话节奏；排除：原音频台词、环境声、音乐与噪声。
 ```
 
-Use the exact approved slot number, target character/source, mode, compatible retention marker, scope, and exclusions. Never include the source filename. At the actual vocal event in `镜头设计：`, cite the same token naturally, for example `FLICK使用 <Audio 1> 的音色与说话方式参考，并以……说：`. The label must therefore appear at least once in the binding area and once at its owning vocal event.
+Use the exact approved slot number, target character/source, mode, compatible retention marker, scope, and exclusions. Never include the source filename. At the actual vocal event in `镜头详述：`, cite the same token naturally, for example `FLICK使用 <Audio 1> 的音色与说话方式参考，并以……说：`. The label must therefore appear at least once in the binding area and once at its owning vocal event.
 
 At each vocal event, name the real character in natural Chinese and keep the complete written voice baseline, line-specific emotion, pace, breath, pause, and intention before the exact dialogue. The audio reference strengthens acoustic identity but does not replace playable vocal direction.
 

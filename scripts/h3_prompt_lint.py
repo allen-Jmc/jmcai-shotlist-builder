@@ -437,6 +437,53 @@ def lint_chinese_machine(prompt: str, index: int) -> tuple[list[str], list[re.Ma
     return [f"Chinese machine block {index}: {e}" for e in errors], shots
 
 
+def zh_machine_cut(match: re.Match[str]) -> float | None:
+    """Cut time in seconds for a Chinese machine shot marker, when it carries one."""
+    groups = match.groupdict()
+    if groups.get("minute") is None:
+        return None
+    return int(match.group("minute")) * 60 + float(match.group("second"))
+
+
+def lint_pair_machine(
+    zh: str,
+    en: str,
+    index: int,
+    zh_shots: list[re.Match[str]],
+    en_shots: list[re.Match[str]],
+) -> list[str]:
+    """Pair the Chinese six-section prompt with its English companion.
+
+    Dual-prompt mode: the Chinese machine-aligned six-section prompt is the
+    deliverable itself, not a review view, so every parity check runs against it.
+    """
+    errors: list[str] = []
+    if len(zh_shots) != len(en_shots):
+        errors.append(f"shot-count mismatch: Chinese {len(zh_shots)} vs English {len(en_shots)}")
+    else:
+        zh_cuts = [c for c in (zh_machine_cut(m) for m in zh_shots[1:]) if c is not None]
+        en_cuts = [
+            c
+            for c in (shot_cut_seconds(m) for m in en_shots[1:] if m.group("minute") is not None)
+            if c is not None
+        ]
+        if len(zh_cuts) != len(en_cuts) or any(abs(a - b) > 1e-3 for a, b in zip(zh_cuts, en_cuts)):
+            errors.append(f"cut-time mismatch: Chinese {zh_cuts} vs English {en_cuts}")
+    zh_lines = [m.group("text").strip() for m in DIALOGUE_TAG.finditer(zh)]
+    en_lines = [m.group("text").strip() for m in DIALOGUE_TAG.finditer(en)]
+    if zh_lines != en_lines:
+        errors.append(f"dialogue mismatch: Chinese {zh_lines!r} vs English {en_lines!r}")
+    zh_no_music = re.search(r"^非剧情音乐：\s*\n\s*无配乐。?\s*$", zh, re.MULTILINE) is not None
+    en_na = re.search(r"^non_diegetic_music:\s*\n\s*N/A\s*$", en, re.MULTILINE | re.IGNORECASE) is not None
+    if zh_no_music != en_na:
+        errors.append("music mismatch: Chinese 无配乐 and English N/A must map one-to-one")
+    zh_audio_labels = {canonical_audio_label(label) for label in AUDIO_LABEL.findall(zh)}
+    en_audio_labels = {canonical_audio_label(label) for label in AUDIO_LABEL.findall(en)}
+    if zh_audio_labels != en_audio_labels:
+        errors.append(f"audio-label mismatch: Chinese {sorted(zh_audio_labels)} vs English {sorted(en_audio_labels)}")
+    return [f"pair {index}: {e}" for e in errors]
+
+
 def lint_pair(zh: str, en: str, index: int, zh_shots: list[re.Match[str]], en_shots: list[re.Match[str]]) -> list[str]:
     errors: list[str] = []
     if len(zh_shots) != len(en_shots):
@@ -478,52 +525,78 @@ def main() -> int:
     args = parser.parse_args()
     source = args.html_file.read_text(encoding="utf-8")
     blocks = prompt_blocks(source)
-    chinese = [p for p in blocks if TITLE.search(p)]
-    chinese_machine = [p for p in blocks if ZH_MACHINE_START.search(p)]
+    storyboard = [p for p in blocks if TITLE.search(p)]
+    machine = [p for p in blocks if ZH_MACHINE_START.search(p)]
     english = [p for p in blocks if re.search(r"^subject_definitions:\s*$", p, re.MULTILINE | re.IGNORECASE)]
     errors: list[str] = []
-    if not chinese:
-        errors.append("HTML: no Chinese director-storyboard prompt blocks found")
-    if len(chinese) != len(english):
-        errors.append(f"HTML: expected one English companion per Chinese block, found {len(chinese)} Chinese and {len(english)} English")
-    has_chinese_prompt = len(chinese_machine) > 0
-    if has_chinese_prompt:
-        if len(chinese_machine) != len(chinese):
-            errors.append(f"HTML: expected {len(chinese)} Chinese machine prompts, found {len(chinese_machine)}")
-        expected_total = len(chinese) + len(chinese_machine) + len(english)
+
+    # Dual-prompt delivery is the default: one Chinese six-section prompt plus its
+    # English companion. A storyboard block is a review view and is no longer part
+    # of the deliverable, so when only machine prompts are present they are the base.
+    if machine and not storyboard:
+        base_kind, base = "machine", machine
+    elif storyboard:
+        base_kind, base = "storyboard", storyboard
     else:
-        expected_total = len(chinese) + len(english)
+        base_kind, base = "none", []
+
+    if not base:
+        errors.append("HTML: no Chinese prompt blocks found (expected 主体定义： six-section blocks)")
+    if len(base) != len(english):
+        errors.append(
+            f"HTML: expected one English companion per Chinese block, found {len(base)} Chinese and {len(english)} English"
+        )
+    if base_kind == "storyboard":
+        if machine and len(machine) != len(base):
+            errors.append(f"HTML: expected {len(base)} Chinese machine prompts, found {len(machine)}")
+        expected_total = len(base) + len(machine) + len(english)
+    else:
+        expected_total = len(base) + len(english)
     if len(blocks) != expected_total:
-        errors.append("HTML: one or more prompt-block containers are neither canonical Chinese, Chinese machine, nor canonical English")
+        errors.append(
+            "HTML: one or more prompt-block containers are neither a Chinese prompt nor a canonical English block"
+        )
+
     zh_results: list[list[re.Match[str]]] = []
     en_results: list[list[re.Match[str]]] = []
-    for i, prompt in enumerate(chinese, 1):
-        block_errors, shots = lint_chinese(prompt, i)
-        errors.extend(block_errors)
-        zh_results.append(shots)
-    if has_chinese_prompt:
-        for i, prompt in enumerate(chinese_machine, 1):
+    if base_kind == "machine":
+        for i, prompt in enumerate(machine, 1):
+            block_errors, shots = lint_chinese_machine(prompt, i)
+            errors.extend(block_errors)
+            zh_results.append(shots)
+    elif base_kind == "storyboard":
+        for i, prompt in enumerate(storyboard, 1):
+            block_errors, shots = lint_chinese(prompt, i)
+            errors.extend(block_errors)
+            zh_results.append(shots)
+        for i, prompt in enumerate(machine, 1):
             block_errors, _shots = lint_chinese_machine(prompt, i)
             errors.extend(block_errors)
+
     for i, prompt in enumerate(english, 1):
         block_errors, shots = lint_english(prompt, i)
         errors.extend(block_errors)
         en_results.append(shots)
-    for i, (zh, en, zh_shots, en_shots) in enumerate(zip(chinese, english, zh_results, en_results), 1):
-        errors.extend(lint_pair(zh, en, i, zh_shots, en_shots))
-    if has_chinese_prompt:
-        for i, (zh_m, en) in enumerate(zip(chinese_machine, english), 1):
+
+    if base_kind == "machine":
+        for i, (zh, en, zh_shots, en_shots) in enumerate(zip(machine, english, zh_results, en_results), 1):
+            errors.extend(lint_pair_machine(zh, en, i, zh_shots, en_shots))
+    elif base_kind == "storyboard":
+        for i, (zh, en, zh_shots, en_shots) in enumerate(zip(storyboard, english, zh_results, en_results), 1):
+            errors.extend(lint_pair(zh, en, i, zh_shots, en_shots))
+        for i, (zh_m, en) in enumerate(zip(machine, english), 1):
             zh_m_lines, en_lines = clean_en_dialogue(zh_m), clean_en_dialogue(en)
             if zh_m_lines != en_lines:
                 errors.append(f"pair {i}: Chinese machine dialogue {zh_m_lines!r} vs English {en_lines!r} mismatch")
-    errors.extend(lint_boundaries(source, len(chinese)))
+
+    errors.extend(lint_boundaries(source, len(base)))
     if errors:
-        print(f"FAIL: {len(errors)} issue(s) across {len(chinese)} H3 prompt pair(s)")
+        print(f"FAIL: {len(errors)} issue(s) across {len(base)} H3 prompt pair(s)")
         for error in errors:
             print(f"- {error}")
         return 1
-    mode_text = "dual-prompt (Chinese six-section + English six-section, with review-only storyboard view)" if has_chinese_prompt else "dual-prompt (Chinese storyboard + English six-section)"
-    print(f"PASS: {len(chinese)} {mode_text} prompt(s) satisfy structural and parity lint checks")
+    mode_text = "dual-prompt (Chinese six-section + English six-section)"
+    print(f"PASS: {len(base)} {mode_text} prompt(s) satisfy structural and parity lint checks")
     return 0
 
 

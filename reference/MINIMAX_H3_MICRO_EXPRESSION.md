@@ -10,7 +10,7 @@ The JMCAI Shotlist Builder remains authoritative for:
 - H3 unit duration, internal cuts, and cross-clip continuity;
 - I2VA, FL2VA, L2VA, or Ref2VA routing;
 - `VOICE_BIBLE`, speaker IDs, `<d>` payloads, field order, and reference indexing;
-- the paired Chinese director storyboard and English six-section companion compiled from one approved timeline.
+- the paired Chinese six-section prompt and English six-section companion compiled from one approved timeline.
 
 Use this reference only to compile the acting layer inside an already approved shot window. Ignore the source skill's standalone defaults of six seconds, one close-up, one continuous shot, Chinese-only prose, mode recommendation, and final-prompt delivery.
 
@@ -331,7 +331,7 @@ Use only constraints needed for the current source and likely H3 failure mode.
 
 ## 14. Bilingual serialization
 
-Compile the Chinese director storyboard and English six-section companion using their distinct syntax but exactly the same:
+Compile the Chinese six-section prompt and English six-section companion using their distinct syntax but exactly the same:
 
 - shot numbers and timestamps;
 - action order and degree;
