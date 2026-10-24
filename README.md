@@ -228,9 +228,9 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 
 ---
 
-## 十一、 30 篇参考规约深度导航与架构索引
+## 十一、 31 篇参考规约深度导航与架构索引
 
-系统将专业视听工业规范梳理为 `reference/` 目录下的 30 篇深度规约：
+系统将专业视听工业规范梳理为 `reference/` 目录下的 31 篇深度规约：
 
 | 领域分类 | 规约文件名 | 核心内容简介 |
 | :--- | :--- | :--- |
@@ -249,6 +249,7 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 | | `MINIMAX_H3_DUAL_PROMPT_CONTRACT.md` | 中英文双模态提示词逐字台词绝对对齐契约 |
 | | `MINIMAX_H3_AUDIO_REFERENCE_BINDING.md` | 音频参考槽位绑定规则与声线复用机制 |
 | | `MINIMAX_H3_ACTOR_DIALOGUE_CRAFT.md` | 演员对白与口型时序工艺（防吞字与抢画） |
+| | `SCENE_ACTING_CRAFT.md` | 文戏场景表演编排（听者反应 / 接话节奏四型 / 行动动词 / 地位翻转 / 停顿分类 / 类型语法 / 误演禁令） |
 | | `MINIMAX_H3_MICRO_EXPRESSION.md` | 演员微表情泄漏律与微表演谱（假面与极性锁定） |
 | | `MINIMAX_H3_TIMING_ENGINEERING.md` | 毫秒级切点与时序工程（Shot 1/Shot N 时间戳语法） |
 | | `MINIMAX_H3_ROUTING.md` | I2VA / FL2VA / L2VA / Ref2VA 四大生成模式智能路由 |
