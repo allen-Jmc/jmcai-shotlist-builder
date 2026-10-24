@@ -182,6 +182,65 @@ Select and rewrite only what the source supports. Do not dump IDs or library wor
 - M069: grief pulls the face down → an inhale rebuilds control
 - M070: control nears failure → sleeves or another approved prop are straightened to recover
 
+### Single-point phrase palette
+
+The library above describes **sequences**. When one precise action is enough — a single beat, a single channel, no chain — use a single-point phrase instead.
+
+**Priority: chain first, point second.** A point phrase is for deliberate one-action emphasis, not the default. Never stack three point phrases into one beat; that is exactly what the chains exist to prevent. One point per beat, and only when the scene truth supports that specific action.
+
+| Part | Phrase | Effect |
+| --- | --- | --- |
+| Brow | `raises one eyebrow slightly` | lifts one brow a little |
+| Brow | `briefly raises both eyebrows` | short lift of both brows |
+| Brow | `draws the eyebrows slightly together` | brows pull toward the centre |
+| Brow | `slightly raises the inner corners of the eyebrows` | inner brow lifts |
+| Brow | `the brow tension gradually releases` | brow tension lets go |
+| Eyes | `narrows the eyes slightly` | slight narrowing |
+| Eyes | `the eyes widen briefly, then settle` | brief widening, then settle |
+| Eyes | `blinks once, slowly` | one slow blink |
+| Eyes | `the lower eyelids tighten slightly` | lower lids tighten |
+| Eyes | `the eyes become moist without tears falling` | wet eyes, no tears fall |
+| Gaze | `glances sideways without turning the head` | side glance, head still |
+| Gaze | `briefly lowers the gaze, then restores eye contact` | drop and restore |
+| Gaze | `the gaze flicks toward the door, then returns` | flick away and back |
+| Gaze | `holds steady eye contact` | steady contact |
+| Mouth corner | `one corner of the mouth lifts slightly` | one-sided lift |
+| Mouth corner | `a faint, closed-mouth smile appears` | faint closed smile |
+| Mouth corner | `the smile gradually fades` | smile fades |
+| Mouth corner | `suppresses a smile by pressing the lips together` | press lips over a smile |
+| Mouth corner | `the corners of the mouth turn down slightly` | both corners drop |
+| Lips | `presses the lips together briefly` | brief press |
+| Lips | `the lips part slightly before speaking` | lips part before speech |
+| Lips | `the lower lip trembles faintly` | faint lower-lip tremble |
+| Jaw | `the jaw tightens subtly` | subtle jaw set |
+| Jaw | `the jaw slowly relaxes` | jaw releases |
+| Cheek | `the cheeks lift slightly as the eyes gently narrow` | cheek lift with narrowing |
+| Nose | `the nostrils flare slightly` | slight flare |
+| Nose | `briefly wrinkles the nose` | short nose wrinkle |
+| Throat | `swallows softly, with a small movement in the throat` | soft swallow |
+
+### Phrase modifiers
+
+A phrase without a modifier leaves amplitude, timing and trigger to the model. Attach only the modifiers this beat needs.
+
+| Modifier | Effect |
+| --- | --- |
+| `slightly` / `subtly` | reduce amplitude |
+| `briefly` / `for a split second` | shorten duration |
+| `gradually` / `slowly` | slow the change |
+| `only on the left side` | confine to one side — and state whether that means the character's own left or screen left |
+| `just before speaking` | place the action immediately before the line |
+| `on hearing the word "X"` | trigger on a specific spoken word — replace X with the real word from the approved dialogue |
+| `then returns to a neutral expression` | specify the after-state |
+| `while the rest of the face remains relaxed` | isolate the action to one channel |
+
+Two rules that matter more than the table:
+
+- **Trigger words must exist in the actual dialogue.** A reaction bound to `on hearing the word "leave"` fails silently if the line never says it. Never alter the line to fit the trigger.
+- **Side must be unambiguous.** `only on the left side` is read differently by different models; always add whether it is the character's own left or screen left.
+
+`Facial Realism` is not a modifier. Emit it only when the corresponding LoRA is confirmed loaded — see the hard invariant in `SKILL.md`.
+
 ## 7. Emotion routing library
 
 Use these as search routes, not predetermined readings. Derive the actual mask, leak, and after-state from scene context.
