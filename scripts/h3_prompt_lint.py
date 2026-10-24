@@ -105,6 +105,13 @@ MODE_MARKERS = {
     "audio reference": {"reference", "weak_reference"},
 }
 
+# Contract 5.9: an un-made-up project must not describe makeup. The pink translucency
+# comes from exposure, grading and diffusion, never from makeup vocabulary.
+MAKEUP_WORDS = re.compile(
+    r"眼影|腮红|红晕|唇色|美颜|妆效|eyeshadow|blush|lipstick|make-?up",
+    re.IGNORECASE,
+)
+
 
 def canonical_audio_label(label: str) -> str:
     number = re.search(r"\d+", label)
@@ -459,6 +466,46 @@ def zh_machine_cut(match: re.Match[str]) -> float | None:
     return int(match.group("minute")) * 60 + float(match.group("second"))
 
 
+def lint_mandatory(zh: str, en: str, index: int) -> list[str]:
+    """Check the contract section 5 mandatory elements.
+
+    Keyword-level only: this proves a statement was written, not that it is correct.
+    That is still worth checking, because the common failure is the whole statement
+    being absent rather than being subtly wrong.
+
+    Conditions are inferred from the prompt itself: a face-source declaration only
+    applies when a character sheet is referenced, a grade lock only when a scene
+    plate is referenced, and the left-right ban only when two or more subjects appear.
+    """
+    errors: list[str] = []
+    both = zh + "\n" + en
+    subjects = len(set(re.findall(r"<Subject\s+(\d+)>", both, re.IGNORECASE)))
+    has_sheet = re.search(r"四视图|设定图|four-view|character sheet", both, re.IGNORECASE) is not None
+    has_plate = re.search(r"场景图|环境图|scene plate", both, re.IGNORECASE) is not None
+
+    checks = [
+        ("opening shot declaration", r"第一个镜头|开场直接|first shot|opens directly", True),
+        (
+            "face-source declaration",
+            r"面部特写.*(?:遮|掩)|facial close-up.*masked|facial identity only",
+            has_sheet,
+        ),
+        ("grade and set lock", r"调色.*场景图|grading.*scene plate|不得重新设计场景|do not redesign the set", has_plate),
+        ("left-right ban", r"不得互换.*左右|must not swap.*screen", subjects >= 2),
+    ]
+    for name, pattern, applies in checks:
+        if not applies:
+            continue
+        if re.search(pattern, both, re.IGNORECASE) is None:
+            errors.append(f"missing {name} (contract 5.x)")
+
+    for label, text in (("Chinese", zh), ("English", en)):
+        found = MAKEUP_WORDS.findall(text)
+        if found:
+            errors.append(f"{label} prompt carries makeup vocabulary: {sorted(set(found))}")
+    return [f"pair {index}: {e}" for e in errors]
+
+
 def lint_pair_machine(
     zh: str,
     en: str,
@@ -595,6 +642,8 @@ def main() -> int:
     if base_kind == "machine":
         for i, (zh, en, zh_shots, en_shots) in enumerate(zip(machine, english, zh_results, en_results), 1):
             errors.extend(lint_pair_machine(zh, en, i, zh_shots, en_shots))
+        for i, (zh, en) in enumerate(zip(machine, english), 1):
+            errors.extend(lint_mandatory(zh, en, i))
     elif base_kind == "storyboard":
         for i, (zh, en, zh_shots, en_shots) in enumerate(zip(storyboard, english, zh_results, en_results), 1):
             errors.extend(lint_pair(zh, en, i, zh_shots, en_shots))

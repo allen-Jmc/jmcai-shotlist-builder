@@ -79,7 +79,7 @@ def six_section_prompt(
         audio_event = ", using the voice-timbre reference from <Audio 1>,"
         task_types += f" + {audio_mode}"
     music = "A sparse solo-piano note enters before the final breath and stops before the landing frame." if scored else "N/A"
-    summary = f"summary:\n[{task_types}] The target video shows <Subject 1> making a quiet promise beside a window."
+    summary = f"summary:\n[{task_types}] The target video shows <Subject 1> making a quiet promise beside a window. The first shot of this unit belongs to <Subject 1>; the clip opens directly on <Subject 1>."
     retention = f"retention_analysis:\n<Subject 1> (appears in [Shot 1], [Shot 2]): fully_preserved - identity, wardrobe, and screen position are retained.{audio_retention}"
     if bad_order:
         summary, retention = retention, summary
@@ -110,7 +110,7 @@ def chinese_machine_prompt(
 ) -> str:
     """构造合规的中文机读六段式测试夹具提示词。"""
     music = "稀疏钢琴单音在最后一个呼吸前进入，停在尾态前。" if scored else "无配乐。"
-    summary = "任务摘要：\n[reference generation] 目标视频展示 <Subject 1> 在窗边许下安静承诺。"
+    summary = "任务摘要：\n[reference generation] 目标视频展示 <Subject 1> 在窗边许下安静承诺。本段第一个镜头是 <Subject 1> 的镜头，开场直接是 <Subject 1> 的画面。"
     retention = "保留分析：\n<Subject 1>：reference, 保留角色身份五官与服装，窗边站位与动作由本场景生成。"
     if bad_order:
         summary, retention = retention, summary
@@ -317,6 +317,35 @@ def main() -> int:
     bad_runtime = run(UNIT_LINT, html_document(zh=storyboard_prompt(), en=six_section_prompt(), displayed_runtime=405))
     require(bad_runtime.returncode != 0 and "405s != summed unit duration 12s" in bad_runtime.stdout, bad_runtime.stdout)
 
+    # Contract section 5 mandatory elements must be enforced, not merely documented.
+    no_opening = run(
+        PROMPT_LINT,
+        html_document(
+            zh=None,
+            zh_machine=chinese_machine_prompt().replace(
+                "本段第一个镜头是 <Subject 1> 的镜头，开场直接是 <Subject 1> 的画面。", ""
+            ),
+            en=six_section_prompt().replace(
+                "The first shot of this unit belongs to <Subject 1>; the clip opens directly on <Subject 1>.",
+                "",
+            ),
+        ),
+    )
+    require(
+        no_opening.returncode != 0 and "opening shot declaration" in no_opening.stdout,
+        no_opening.stdout,
+    )
+
+    makeup = run(
+        PROMPT_LINT,
+        html_document(
+            zh=None,
+            zh_machine=chinese_machine_prompt().replace("穿深色针织衫", "穿深色针织衫，眼影偏冷"),
+            en=six_section_prompt(),
+        ),
+    )
+    require(makeup.returncode != 0 and "makeup vocabulary" in makeup.stdout, makeup.stdout)
+
     # End-to-end sample: one complete H3 unit that must satisfy all three linters at
     # once. Run it from its real directory so the relative asset link resolves.
     sample = SAMPLE_DIR / "sample_h3_unit.html"
@@ -330,7 +359,7 @@ def main() -> int:
             f"end-to-end sample failed {script.name}:\n{result.stdout}{result.stderr}",
         )
 
-    print("PASS: H3 dual-prompt regression tests enforce external filename maps plus paired Chinese/English <Audio N> bindings, event citations, filename isolation, compatible audio modes, timing/dialogue parity, speaker binding, and runtime truth")
+    print("PASS: H3 dual-prompt regression tests enforce external filename maps plus paired Chinese/English <Audio N> bindings, event citations, filename isolation, compatible audio modes, timing/dialogue parity, speaker binding, contract-5 mandatory elements, and runtime truth")
     return 0
 
 
