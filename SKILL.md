@@ -2,7 +2,7 @@
 name: jmcai-shotlist-builder
 description: |
   JMCAI 电影级工业视听分镜与多模态工单构建系统（正式版）。用于文学剧本拆解、分镜蓝图规划、核心视听资产台账建立、工整三模态提示词编制（中文分镜版/中文执行版/英文执行版）及离线自包含 HTML 生产工单构建。
-  原生支持 MiniMax H3（海螺视频 10–15 秒连续长片段、双轨资产联动、音频/口型强绑定、六段式契约）、ByteDance Seedance 2.0/2.5 与快手可灵 Kling 3.0。
+  原生支持 MiniMax H3（海螺视频 10–15 秒连续长片段、双轨资产联动、音频/口型强绑定、六段式契约）与 ByteDance Seedance 2.0/2.5。
   提供双轨资产画廊（神颜立绘/生产四视图）、关键道具物理演进链、5 枚视听彩色胶囊徽章、单元内联微缩图与 14 项防穿帮质检单，内置三大官方 Linter 自动化质检保障。
   当用户提出“分镜制作”、“剧本拆解”、“生成视频提示词”、“H3 工单制作”、“制作分镜工单”或上传文学短片剧本时触发。
 ---
@@ -170,10 +170,6 @@ Preserve scene order, action, dialogue placement, emotional progression, cinemat
 
 Read [PROMPT_DENSITY.md](reference/PROMPT_DENSITY.md), [PROMPT_PATTERNS.md](reference/PROMPT_PATTERNS.md), [STYLE_BLOCK.md](reference/STYLE_BLOCK.md), [CAMERA_EMOTION.md](reference/CAMERA_EMOTION.md), and [MICRO_BEATS.md](reference/MICRO_BEATS.md). When targeting Seedance 2.5, apply official syntax markers `( )`, `< >`, `{ }`, `【 】`, native 30s timing, 50-slot mapping, and anti-mush guard blocks from [SEEDANCE_25_PRODUCTION_SPEC.md](reference/SEEDANCE_25_PRODUCTION_SPEC.md). Otherwise preserve the existing Seedance 2.0 behavior.
 
-### Kling 3.0 branch (optional)
-
-When targeting Kuaishou Kling 3.0 / 2.6, apply the five-layer prompt structure, subject anchoring `[Character A: ...]`, multi-shot timing `Shot N (0-Ns)`, P1-P4 dialogue protocol, and anti-melting negative constraints from [KLING_PROMPT_CONTRACT.md](reference/KLING_PROMPT_CONTRACT.md).
-
 ### MiniMax H3 branch
 
 Read [MINIMAX_H3_LONG_SCRIPT_UNITS.md](reference/MINIMAX_H3_LONG_SCRIPT_UNITS.md) first, then:
@@ -300,6 +296,8 @@ Assemble the selected branch with [templates/HTML_TEMPLATE.md](templates/HTML_TE
 - Seedance filename: `Shotlist_<scope>_EN.html`
 - MiniMax H3 filename: `Shotlist_<scope>_MiniMaxH3.html`
 
+The template's `{PLAN_CODE}`, `{PLAN_LABEL}`, `{PLAN_OPTIONS}`, and `{N_PLANS}` slots are driven by [PLAN_TYPES.md](reference/PLAN_TYPES.md); read it before filling them rather than inventing abbreviations. The `planFilter` toolbar control must list exactly the plan codes actually used in the deliverable.
+
 For H3, include one Chinese Director Storyboard copy control and one English six-section copy control per unit (plus conditionally one Machine-Aligned Chinese Six-Section copy control when tri-modal output is enabled). Include the unit blueprint summary, `VOICE_BIBLE`, `POST_NODES`, runtime totals, scene shot ladder, pairwise boundary ledgers, and per-unit planning metadata.
 
 
@@ -389,6 +387,9 @@ python scripts/h3_upload_order_lint.py <html-file>
 - `reference/MINIMAX_H3_FULL_REFERENCE_EN.md` — canonical English six-section Ref2VA labels, retention relationships, dialogue tags, and audio fields.
 - `reference/MINIMAX_H3_AUDIO_REFERENCE_BINDING.md` — conditional audio gate, operator upload-slot map, filename isolation, and English `<Audio N>` binding.
 - `reference/PROMPT_DENSITY.md` — shared shot-beat packing for both platforms.
+- `reference/PROMPT_PATTERNS.md` — reusable shot and camera-movement patterns for both platforms.
+- `reference/STYLE_BLOCK.md` — locked look-and-grade style block definition.
+- `reference/PLAN_TYPES.md` — shot-plan abbreviations that populate the HTML `{PLAN_CODE}`, `{PLAN_LABEL}`, `{PLAN_OPTIONS}`, and `{N_PLANS}` slots.
 - `templates/HTML_TEMPLATE.md` — self-contained deliverable structure.
 - `templates/H3_PRODUCTION_LAYOUT.md` — default H3 card layout and mandatory expanded per-unit image/video/audio upload checklist.
 - `scripts/h3_upload_order_lint.py` and `scripts/h3_upload_order_tests.py` — detect missing, hidden, misordered or unusable per-unit upload checklists without generating media.
@@ -398,9 +399,11 @@ python scripts/h3_upload_order_lint.py <html-file>
 - `scripts/h3_boundary_contact_sheet.py` — rendered adjacent-clip inspection.
 - `reference/PROMPT_TEMPLATE_ASSET_EXPANSION.md` — character/scene/prop text-to-image asset engineering, three iron rules, two-track asset workflow, and film stock matrices.
 - `reference/DRAMATURGY_MONTAGE_LAW.md` — dramatic scene formula, three-detail rule, Walter Murch Rule of Six, and three-jobs shot function.
+- `reference/CAMERA_EMOTION.md` — camera-movement emotional grammar shared by both platforms.
+- `reference/SPATIAL_BLOCKING.md` — spatial blocking, 180-degree axis discipline, and top-down SVG blocking plans.
+- `reference/MICRO_BEATS.md` — millisecond micro-beat scheduling shared by both platforms.
 - `reference/CAMERA_LIGHTING_VOCABULARY.md` — Hollywood camera movement and professional lighting lexicon, single dominant move rule.
 - `reference/SEEDANCE_25_PRODUCTION_SPEC.md` — ByteDance Seedance 2.5 official 30s multi-shot spec, 50-slot mapping, four bracket markers, and anti-mush guard block.
-- `reference/KLING_PROMPT_CONTRACT.md` — Kuaishou Kling 3.0 five-layer structure, subject anchoring `[Character A: ...]`, multi-shot timeline, and P1-P4 dialogue protocol.
 - `reference/VIDEO_CONTINUITY_FIXES_CHECKLIST.md` — 14-item pre-delivery continuity checklist, prop state tracking, and failure-mode prompt fixes.
 - `reference/MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md` — machine-aligned Chinese six-section prompt spec with explicit subject slots, retention analysis, and `<d>` dialogue containers.
 

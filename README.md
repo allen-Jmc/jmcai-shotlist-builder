@@ -1,16 +1,16 @@
 # JMCAI Shotlist Builder (电影级工业分镜与视觉工单构建系统)
 
-[![Version](https://img.shields.io/badge/version-2.0.0--release-blue.svg)](file:///c:/Users/cdall/Downloads/土豆/SKILL2.0基础款/jmcai-shotlist-builder)
-[![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)](file:///c:/Users/cdall/Downloads/土豆/SKILL2.0基础款/jmcai-shotlist-builder)
-[![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5%20%7C%20Kling%203.0-purple.svg)](file:///c:/Users/cdall/Downloads/土豆/SKILL2.0基础款/jmcai-shotlist-builder)
-[![License](https://img.shields.io/badge/license-Proprietary-orange.svg)](file:///c:/Users/cdall/Downloads/土豆/SKILL2.0基础款/jmcai-shotlist-builder)
+![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
+![Engines](https://img.shields.io/badge/engines-MiniMax%20H3%20%7C%20Seedance%202.5-purple.svg)
+![License](https://img.shields.io/badge/license-Proprietary-orange.svg)
 
 > **JMCAI Shotlist Builder** 是面向 AI 电影、商业短剧与高品质生成式视听内容创作的**工业级视听分镜拆解、全模态资产台账规划与离线自包含 HTML 生产工单构建系统**。
-> 本系统深度打通 **MiniMax H3（海螺视频）**、**ByteDance Seedance 2.0 / 2.5** 与 **快手可灵 Kling 3.0 / 2.6** 三大主流视频大模型，建立了一套严格的电影学视听工程标准，彻底解决 AI 视频制作中“口型漂移、多镜头人物穿帮、道具自动复原、大模型语法割裂、运镜无动机、操作员上传错位”等工业化落地痛点。
+> 本系统深度打通 **MiniMax H3（海螺视频）** 与 **ByteDance Seedance 2.0 / 2.5** 两大主流视频大模型，建立了一套严格的电影学视听工程标准，彻底解决 AI 视频制作中“口型漂移、多镜头人物穿帮、道具自动复原、大模型语法割裂、运镜无动机、操作员上传错位”等工业化落地痛点。
 
 ---
 
-## 一、 系统全景架构与多引擎矩阵
+## 一、 系统全景架构与双引擎矩阵
 
 ```mermaid
 graph TD
@@ -18,26 +18,25 @@ graph TD
     
     B --> C1[MiniMax H3 工业长剧集分支]
     B --> C2[ByteDance Seedance 2.0/2.5 分支]
-    B --> C3[快手可灵 Kling 3.0/2.6 分支]
 
     B --> D[共享底层视听工业规范<br/>空间走位 · 轴线律 · 微表情谱 · 道具演进链]
     B --> E[双轨视觉资产体系<br/>Track A 神颜立绘 + Track B 生产四视图]
 
-    C1 & C2 & C3 & D & E --> F[离线自包含 HTML 生产工单系统]
+    C1 & C2 & D & E --> F[离线自包含 HTML 生产工单系统]
     F --> G[三大官方 Linter 自动化质检保障<br/>Prompt Lint · Unit Lint · Upload Lint]
 ```
 
-### 1. 三大视频引擎深度适配特性对比
+### 1. 两大视频引擎深度适配特性对比
 
-| 核心维度 | MiniMax H3 (海螺视频) | ByteDance Seedance 2.0 / 2.5 | 快手可灵 Kling 3.0 / 2.6 |
-| :--- | :--- | :--- | :--- |
-| **黄金单段时长** | **10–15 秒**（严格上限 15.0s） | **原生 30 秒**（长运镜时空连续性） | **5–10 秒**（高动作密度与写实物理） |
-| **核心提示词形态** | **三模态工整对仗**（分镜版/中文执行版/英文执行版） | **多层运镜情绪语法**（带标定符号） | **五层结构化契约**（主体/镜头/对白/负向） |
-| **专有语法标记** | `<Subject N>`, `<Picture N>`, `<Audio N>`, `<d>...</d>` | `( )` 权重、`< >` 运镜、`{ }` 动作、`【 】` 状态 | `[Character A: ...]`, `Shot N (0-Ns)` |
-| **声画同步契约** | `<Audio N>` 槽位绑定 + 纯中文台词口型逐字闭环 | 画面节奏与背景音乐微节拍联动 | P1–P4 多角色发言轮转对白协议 |
-| **参考资产上限** | **9 张图片 + 3 部视频 + 3 轨音频** | 50-Slot 资产与动作锚定槽位 | 角色面容库 + 关键帧垫图 |
-| **防穿帮机制** | 强制执行“四大保留策略”（reference / weak / copy） | 防泥化守护块（Anti-mush guard blocks） | 防融化负向约束集（Anti-melting constraints） |
-| **适用核心场景** | **长剧集多镜头叙事、强对话、口型声线强绑定** | **大动态动作戏、长镜头跟拍、复杂空间走位** | **微表情特写、写实光影质感、短片段爆发戏** |
+| 核心维度 | MiniMax H3 (海螺视频) | ByteDance Seedance 2.0 / 2.5 |
+| :--- | :--- | :--- |
+| **黄金单段时长** | **10–15 秒**（严格上限 15.0s） | **原生 30 秒**（长运镜时空连续性） |
+| **核心提示词形态** | **三模态工整对仗**（分镜版/中文执行版/英文执行版） | **多层运镜情绪语法**（带标定符号） |
+| **专有语法标记** | `<Subject N>`, `<Picture N>`, `<Audio N>`, `<d>...</d>` | `( )` 权重、`< >` 运镜、`{ }` 动作、`【 】` 状态 |
+| **声画同步契约** | `<Audio N>` 槽位绑定 + 纯中文台词口型逐字闭环 | 画面节奏与背景音乐微节拍联动 |
+| **参考资产上限** | **9 张图片 + 3 部视频 + 3 轨音频** | 50-Slot 资产与动作锚定槽位 |
+| **防穿帮机制** | 强制执行“四大保留策略”（reference / weak / copy） | 防泥化守护块（Anti-mush guard blocks） |
+| **适用核心场景** | **长剧集多镜头叙事、强对话、口型声线强绑定** | **大动态动作戏、长镜头跟拍、复杂空间走位** |
 
 ---
 
@@ -177,15 +176,16 @@ graph TD
 
 ---
 
-## 八、 离线自包含 HTML 生产工单六大组件
+## 八、 离线自包含 HTML 生产工单五大视觉模块
 
 工单具备 **100% 离线自包含、零外部 CDN 依赖、毫秒级原生交互**：
 1. **双轨资产画廊**：主角卡片原生搭载 `[ 立绘定妆 | 角色四视图 ]` 切换条，秒级比对；
 2. **关键道具演进时间链**：时间线清晰展示道具物理破损节点；
 3. **视听彩色胶囊徽章条**：5 枚微晶高光徽章（焦段/景别/运镜/光影/微表情）；
 4. **三模态工整对仗选项卡**：导演分镜版 / 中文执行版 / 英文执行版无刷新平滑切换，带一键复制高光反馈；
-5. **上传清单内联微缩图与悬停预览**：44px 列表缩略图 + 260px 高清浮动大图，带暗黑自愈占位；
-6. **14 项防穿帮终素质检单与急救卡**：全套急救方案直接内嵌于工单底部，随时查阅。
+5. **14 项防穿帮终素质检单与急救卡**：全套急救方案直接内嵌于工单底部，随时查阅。
+
+> **另附版式层强制要求**：每个单元的**上传清单内联微缩图**（44px 列表缩略图 + 260px 高清浮动大图，带暗黑自愈占位）由 `templates/H3_PRODUCTION_LAYOUT.md` 约束，属于不可裁剪的版式规范，不单独计为视觉模块。
 
 ---
 
@@ -193,7 +193,7 @@ graph TD
 
 | 阶段代码 | 状态名称 | 核心职责 | 绑定的“用户确认”闸口 (Gate) |
 | :--- | :--- | :--- | :--- |
-| **Phase 0** | `LOCK_PLATFORM` | 确定目标大模型平台 | **强停顿**：询问选择 `Seedance 2.0/2.5`、`MiniMax H3` 还是 `Kling 3.0`，停顿等用户确认。 |
+| **Phase 0** | `LOCK_PLATFORM` | 确定目标大模型平台 | **强停顿**：询问选择 `Seedance 2.0/2.5` 还是 `MiniMax H3`，停顿等用户确认。 |
 | **Phase 1** | `SCRIPT_GROUNDING` | 剧本全文解析与时空锚定 | 提取场次、角色、道具演进、情感弧光与总时长（内部推演，不停顿）。 |
 | **Phase 2** | `REQUEST_ASSETS` | 资产清单与声线意图解析 | **强停顿**：列出人设/四视图/道具清单，确认 `AUDIO_REFERENCE_INTENT`，**停顿等用户提供/确认**。 |
 | **Phase 3** | `LOCK_BLUEPRINT` | 空间调度与蓝图校准 | **强停顿**：<br>1. 多人同框提供俯视走位图 (SVG) 等批准；<br>2. 多单元项目**仅先输出第 1 单元作为校准预览**，停顿等批准后再全量扩展。 |
@@ -228,9 +228,9 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 
 ---
 
-## 十一、 31 篇参考规约深度导航与架构索引
+## 十一、 30 篇参考规约深度导航与架构索引
 
-系统将专业视听工业规范梳理为 `reference/` 目录下的 31 篇深度规约：
+系统将专业视听工业规范梳理为 `reference/` 目录下的 30 篇深度规约：
 
 | 领域分类 | 规约文件名 | 核心内容简介 |
 | :--- | :--- | :--- |
@@ -244,7 +244,6 @@ uv run python scripts/h3_upload_order_lint.py <工单文件名>.html
 | | `PROMPT_PATTERNS.md` | 经典镜头运镜模式与时空推演范式 |
 | | `STYLE_BLOCK.md` | 画风影调风格块定义与锁定 |
 | | `MICRO_BEATS.md` | 毫秒级微节拍调度法 |
-| **快手可灵 Kling** | `KLING_PROMPT_CONTRACT.md` | 可灵 3.0 五层结构契约、主体锚定与 P1-P4 对白协议 |
 | **MiniMax H3 长剧集** | `MINIMAX_H3_LONG_SCRIPT_UNITS.md` | 10–15 秒黄金叙事单元切分与长剧集全流程蓝图 |
 | | `MINIMAX_H3_CHINESE_MACHINE_PROMPT_SPEC.md`| 中文执行六段式规范（主体/摘要/保留/详述/音响/音乐） |
 | | `MINIMAX_H3_DUAL_PROMPT_CONTRACT.md` | 中英文双模态提示词逐字台词绝对对齐契约 |
@@ -281,6 +280,5 @@ git clone https://github.com/allen-Jmc/jmcai-shotlist-builder.git
 
 * **剧本全流程拆解**：*“我上传了一份短片剧本，请帮我拆解并制作完整的电影级分镜工单。”*
 * **ByteDance Seedance 提示词**：*“请使用 Seedance 2.5 规约，生成带 30 秒长运镜标定符号的视频提示词。”*
-* **快手可灵 Kling 提示词**：*“请使用可灵 3.0 规约，生成五层结构化提示词与角色对白协议。”*
 * **MiniMax H3 生产工单**：*“按照 MiniMax H3 规约，输出带双轨画廊、上传微缩图与三模态 Tab 的 HTML 生产工单。”*
 
