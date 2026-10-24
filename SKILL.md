@@ -54,6 +54,8 @@ List script-derived assets in brief categories.
 
 Activate this extension only when the user explicitly asks to use, borrow, match, or transfer the aesthetic style of a provided reference image (including a user-designated video frame). An image upload alone does not activate it. Identity, wardrobe, prop, layout, or first/last-frame references retain their specified roles; do not silently treat them as style inputs. Reuse an explicit style decision within its stated scope until the user changes it.
 
+**Ask once when a reference cannot be classified.** If a supplied image fits none of the recognised roles — character identity, wardrobe, recurring prop, environment, first/last frame, or composition/action extraction — neither drop it silently nor assume it is a style reference. Ask one short question about its intended use and wait. An unclassifiable upload is a missing input, not a decision the user already made.
+
 Inspect the actual reference and extract only relevant, observable traits:
 
 - Lighting: key-light direction, softness, warmth, light/shadow balance, rim light and reflected fill.
@@ -62,6 +64,7 @@ Inspect the actual reference and extract only relevant, observable traits:
 - Materials: the rendering of fibers, wrinkles, metal, ceramic, wood and other surfaces required by the target asset; not the reference objects themselves.
 - Photography: perspective, depth of field, background blur, subject clarity and foreground/background separation.
 - Image finish: contrast, highlight bloom, grain, sharpness and atmospheric depth.
+- Environmental density: how crowded, specific and lived-in the detail is — signage, posters, printed labels, utensils, merchandise, furniture wear, background extras and set dressing — and how much of it stays readable versus thrown out of focus. Extract the density and specificity as a trait; do not import the reference's actual signs, objects or text.
 - Composition and presentation: negative space, subject scale and candid/posed feeling, only where compatible with the target asset's required layout and action.
 
 For a reference **video**, probe it and sample frames before judging: read duration, resolution and frame rate, analyse only the first 30 seconds, build a one-frame-per-second contact sheet, then pull a few full-resolution stills to inspect detail. A contact sheet alone is not enough to judge skin rendering or grain. When fewer than three stills are available for a still-image reference set, tell the user the extracted aesthetic may be unstable.
@@ -84,6 +87,8 @@ When multiple images have different roles, identify which image supplies style a
 Adapt the extracted style to the asset: four-view sheets retain the white background, asymmetric layout, neutral standing pose, accurate wardrobe colors and readable detail specified below. Translate dramatic reference lighting into gentle illumination suitable for identity/wardrobe inspection; do not replace the sheet with a window-side portrait, environment scene, action pose or strongly blurred views. Scene assets and story keyframes may use motivated environmental lighting, depth of field and compatible emotional framing while preserving their scene truth.
 
 This opening rule applies to image asset prompts, not to the fixed Seedance/H3 video-prompt shells. Preserve those platform schemas and the existing H3 reference-binding contract. Before delivery, check explicit style authorization, the opening role statement, content separation and the requested asset layout.
+
+**When no reference material is supplied**, neither invent a look nor leave the aesthetic undefined. Build a project style decision from [STYLE_BLOCK.md](reference/STYLE_BLOCK.md): pick a base variant, lock light, colour, lens character and grain, and record it as the project's approved style. Apply it to scene, prop and video prompts with the aspect-ratio phrase appended; character sheets still take the neutral high-key restructure, never the scene lighting. Once recorded, a project style decision behaves exactly like an extracted one — reuse it within its stated scope until the user changes it. Do not promote one project's chosen backlight, palette or skin rendering into a universal default.
 
 ### Character asset-generation rule
 
